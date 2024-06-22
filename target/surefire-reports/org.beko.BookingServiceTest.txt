@@ -1,0 +1,28 @@
+-------------------------------------------------------------------------------
+Test set: org.beko.BookingServiceTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 6, Errors: 0, Skipped: 0, Time elapsed: 0.015 sec <<< FAILURE!
+org.beko.BookingServiceTest.testBookPlaceWithConflict()  Time elapsed: 0.011 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testBookPlaceWithConflict(BookingServiceTest.java:42)
+
+org.beko.BookingServiceTest.testBookPlaceSuccessfully()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testBookPlaceSuccessfully(BookingServiceTest.java:32)
+
+org.beko.BookingServiceTest.testListBookingsByUser()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testListBookingsByUser(BookingServiceTest.java:68)
+
+org.beko.BookingServiceTest.testListBookingsByPlace()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testListBookingsByPlace(BookingServiceTest.java:77)
+
+org.beko.BookingServiceTest.testListBookingsByDate()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testListBookingsByDate(BookingServiceTest.java:86)
+
+org.beko.BookingServiceTest.testCancelBooking()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)" because "this.bookingService" is null
+	at org.beko.BookingServiceTest.testCancelBooking(BookingServiceTest.java:58)
+

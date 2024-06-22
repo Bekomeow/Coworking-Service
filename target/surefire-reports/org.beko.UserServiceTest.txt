@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: org.beko.UserServiceTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 0.002 sec <<< FAILURE!
+org.beko.UserServiceTest.testLoginUserSuccessfully()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.UserService.register(String, String)" because "this.userService" is null
+	at org.beko.UserServiceTest.testLoginUserSuccessfully(UserServiceTest.java:36)
+
+org.beko.UserServiceTest.testRegisterUserAlreadyExists()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.UserService.register(String, String)" because "this.userService" is null
+	at org.beko.UserServiceTest.testRegisterUserAlreadyExists(UserServiceTest.java:27)
+
+org.beko.UserServiceTest.testLoginUserInvalidCredentials()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.UserService.register(String, String)" because "this.userService" is null
+	at org.beko.UserServiceTest.testLoginUserInvalidCredentials(UserServiceTest.java:44)
+
+org.beko.UserServiceTest.testRegisterUser()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.UserService.register(String, String)" because "this.userService" is null
+	at org.beko.UserServiceTest.testRegisterUser(UserServiceTest.java:20)
+
+org.beko.UserServiceTest.testHasUser()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.UserService.register(String, String)" because "this.userService" is null
+	at org.beko.UserServiceTest.testHasUser(UserServiceTest.java:53)
+

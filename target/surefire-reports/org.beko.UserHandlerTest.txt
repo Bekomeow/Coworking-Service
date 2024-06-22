@@ -1,0 +1,56 @@
+-------------------------------------------------------------------------------
+Test set: org.beko.UserHandlerTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 13, Errors: 0, Skipped: 0, Time elapsed: 0.029 sec <<< FAILURE!
+org.beko.UserHandlerTest.testViewPlaces()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.listPlaces()" because "this.placeService" is null
+	at org.beko.UserHandlerTest.testViewPlaces(UserHandlerTest.java:45)
+
+org.beko.UserHandlerTest.testCancelBookingNotFound()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testCancelBookingNotFound(UserHandlerTest.java:92)
+
+org.beko.UserHandlerTest.testCancelBookingSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testCancelBookingSuccess(UserHandlerTest.java:82)
+
+org.beko.UserHandlerTest.testViewBookingsByPlaceNotFound()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testViewBookingsByPlaceNotFound(UserHandlerTest.java:148)
+
+org.beko.UserHandlerTest.testViewBookingsByUserSuccess()  Time elapsed: 0.025 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testViewBookingsByUserSuccess(UserHandlerTest.java:114)
+
+org.beko.UserHandlerTest.testBookPlaceNotFound()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testBookPlaceNotFound(UserHandlerTest.java:71)
+
+org.beko.UserHandlerTest.testViewBookingsByDate()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testViewBookingsByDate(UserHandlerTest.java:160)
+
+org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess(UserHandlerTest.java:137)
+
+org.beko.UserHandlerTest.testHandleUserActionsInvalidOption()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testHandleUserActionsInvalidOption(UserHandlerTest.java:179)
+
+org.beko.UserHandlerTest.testViewBookingsByUserNotFound()  Time elapsed: 0.001 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testViewBookingsByUserNotFound(UserHandlerTest.java:125)
+
+org.beko.UserHandlerTest.testHandleUserActionsLogout()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testHandleUserActionsLogout(UserHandlerTest.java:170)
+
+org.beko.UserHandlerTest.testBookPlaceSuccess()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.UserHandlerTest.testBookPlaceSuccess(UserHandlerTest.java:55)
+
+org.beko.UserHandlerTest.testViewBookings()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.BookingService.listBookings()" because "this.bookingService" is null
+	at org.beko.UserHandlerTest.testViewBookings(UserHandlerTest.java:104)
+
