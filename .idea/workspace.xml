@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="42a3b9cf-0fa9-46c2-b32d-95665513a354" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2i9PDTViqZby7PvzJH8FHJTEuts" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/BEKZHAN/IdeaProjects/Coworking-Service-1/src/main/java/org/beko/util",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1\src\main\java\org\beko\util" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1\src\test\java\org\beko" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.org.beko in Coworking-Service-1">
+    <configuration name="MainHandlerTest.testAdminLogin_Successful" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Coworking-Service-1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.beko.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.beko" />
+      <option name="MAIN_CLASS_NAME" value="org.beko.MainHandlerTest" />
+      <option name="METHOD_NAME" value="testAdminLogin_Successful" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainHandlerTest.testAdminLogin_WithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Coworking-Service-1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.beko.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.beko" />
+      <option name="MAIN_CLASS_NAME" value="org.beko.MainHandlerTest" />
+      <option name="METHOD_NAME" value="testAdminLogin_WithException" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainHandlerTest.testUserLogin_Successful" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Coworking-Service-1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.beko.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.beko" />
+      <option name="MAIN_CLASS_NAME" value="org.beko.MainHandlerTest" />
+      <option name="METHOD_NAME" value="testUserLogin_Successful" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainHandlerTest.testUserLogin_WithException" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Coworking-Service-1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.beko.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.beko" />
+      <option name="MAIN_CLASS_NAME" value="org.beko.MainHandlerTest" />
+      <option name="METHOD_NAME" value="testUserLogin_WithException" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="org.beko in Coworking-Service-1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Coworking-Service-1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.beko.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.beko" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.org.beko in Coworking-Service-1" />
+        <item itemvalue="JUnit.MainHandlerTest.testAdminLogin_WithException" />
+        <item itemvalue="JUnit.MainHandlerTest.testUserLogin_WithException" />
+        <item itemvalue="JUnit.MainHandlerTest.testUserLogin_Successful" />
+        <item itemvalue="JUnit.MainHandlerTest.testAdminLogin_Successful" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="42a3b9cf-0fa9-46c2-b32d-95665513a354" name="Changes" comment="" />
+      <created>1718899699322</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718899699322</updated>
+      <workItem from="1718899700551" duration="9433000" />
+      <workItem from="1718984267259" duration="1279000" />
+      <workItem from="1718985562153" duration="12989000" />
+      <workItem from="1719056758988" duration="5972000" />
+      <workItem from="1719063136800" duration="2113000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
