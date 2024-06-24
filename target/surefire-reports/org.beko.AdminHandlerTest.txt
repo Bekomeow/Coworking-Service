@@ -1,32 +1,32 @@
 -------------------------------------------------------------------------------
 Test set: org.beko.AdminHandlerTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 0.011 sec <<< FAILURE!
-org.beko.AdminHandlerTest.testViewPlaces()  Time elapsed: 0.004 sec  <<< FAILURE!
-java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.listPlaces()" because "this.placeService" is null
-	at org.beko.AdminHandlerTest.testViewPlaces(AdminHandlerTest.java:33)
-
-org.beko.AdminHandlerTest.testUpdatePlace()  Time elapsed: 0.001 sec  <<< FAILURE!
+Tests run: 7, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 0.014 sec <<< FAILURE!
+org.beko.AdminHandlerTest.testAddPlaceConferenceRoom()  Time elapsed: 0.004 sec  <<< FAILURE!
 java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
-	at org.beko.AdminHandlerTest.testUpdatePlace(AdminHandlerTest.java:70)
+	at org.beko.AdminHandlerTest.testAddPlaceConferenceRoom(AdminHandlerTest.java:56)
+
+org.beko.AdminHandlerTest.testAddPlaceWorkspace()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.AdminHandlerTest.testAddPlaceWorkspace(AdminHandlerTest.java:42)
+
+org.beko.AdminHandlerTest.testHandleAdminActionsLogout()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
+	at org.beko.AdminHandlerTest.testHandleAdminActionsLogout(AdminHandlerTest.java:97)
 
 org.beko.AdminHandlerTest.testDeletePlace()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
 	at org.beko.AdminHandlerTest.testDeletePlace(AdminHandlerTest.java:87)
 
-org.beko.AdminHandlerTest.testAddPlaceWorkspace()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
-	at org.beko.AdminHandlerTest.testAddPlaceWorkspace(AdminHandlerTest.java:42)
+org.beko.AdminHandlerTest.testViewPlaces()  Time elapsed: 0.007 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.listPlaces()" because "this.placeService" is null
+	at org.beko.AdminHandlerTest.testViewPlaces(AdminHandlerTest.java:33)
 
-org.beko.AdminHandlerTest.testAddPlaceConferenceRoom()  Time elapsed: 0.001 sec  <<< FAILURE!
+org.beko.AdminHandlerTest.testUpdatePlace()  Time elapsed: 0 sec  <<< FAILURE!
 java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
-	at org.beko.AdminHandlerTest.testAddPlaceConferenceRoom(AdminHandlerTest.java:56)
+	at org.beko.AdminHandlerTest.testUpdatePlace(AdminHandlerTest.java:70)
 
-org.beko.AdminHandlerTest.testHandleAdminActionsLogout()  Time elapsed: 0.001 sec  <<< FAILURE!
-java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
-	at org.beko.AdminHandlerTest.testHandleAdminActionsLogout(AdminHandlerTest.java:97)
-
-org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption()  Time elapsed: 0 sec  <<< FAILURE!
+org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption()  Time elapsed: 0.001 sec  <<< FAILURE!
 java.lang.NullPointerException: Cannot invoke "org.beko.Util.ScannerWrapper.nextLine()" because "this.scanner" is null
 	at org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption(AdminHandlerTest.java:106)
 

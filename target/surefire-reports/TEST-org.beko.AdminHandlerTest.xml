@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="7" name="org.beko.AdminHandlerTest" time="0.008" errors="0" skipped="0">
+<testsuite tests="7" failures="7" name="org.beko.AdminHandlerTest" time="0.012" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.2.5"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.6+7-b469.82"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.1\jbr\bin"/>
     <property name="user.country.format" value="KZ"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="java.vm.vendor" value="JetBrains s.r.o."/>
     <property name="java.vendor.url" value="https://openjdk.java.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="user.country" value="RU"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="jbr.virtualization.information" value="No virtualization detected"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.6+7-b469.82"/>
@@ -63,14 +63,19 @@
     <property name="java.vendor.version" value="JBR-17.0.6+7-469.82-jcef"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testViewPlaces" time="0.004">
-    <failure message="Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null
-	at org.beko.AdminHandlerTest.testViewPlaces(AdminHandlerTest.java:33)
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testAddPlaceConferenceRoom" time="0.004">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.AdminHandlerTest.testAddPlaceConferenceRoom(AdminHandlerTest.java:56)
 </failure>
   </testcase>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testUpdatePlace" time="0.001">
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testAddPlaceWorkspace" time="0">
     <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.AdminHandlerTest.testUpdatePlace(AdminHandlerTest.java:70)
+	at org.beko.AdminHandlerTest.testAddPlaceWorkspace(AdminHandlerTest.java:42)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testHandleAdminActionsLogout" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.AdminHandlerTest.testHandleAdminActionsLogout(AdminHandlerTest.java:97)
 </failure>
   </testcase>
   <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testDeletePlace" time="0">
@@ -78,22 +83,17 @@
 	at org.beko.AdminHandlerTest.testDeletePlace(AdminHandlerTest.java:87)
 </failure>
   </testcase>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testAddPlaceWorkspace" time="0.001">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.AdminHandlerTest.testAddPlaceWorkspace(AdminHandlerTest.java:42)
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testViewPlaces" time="0.007">
+    <failure message="Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null
+	at org.beko.AdminHandlerTest.testViewPlaces(AdminHandlerTest.java:33)
 </failure>
   </testcase>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testAddPlaceConferenceRoom" time="0.001">
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testUpdatePlace" time="0">
     <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.AdminHandlerTest.testAddPlaceConferenceRoom(AdminHandlerTest.java:56)
+	at org.beko.AdminHandlerTest.testUpdatePlace(AdminHandlerTest.java:70)
 </failure>
   </testcase>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testHandleAdminActionsLogout" time="0.001">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.AdminHandlerTest.testHandleAdminActionsLogout(AdminHandlerTest.java:97)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption" time="0">
+  <testcase classname="org.beko.AdminHandlerTest" name="org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption" time="0.001">
     <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
 	at org.beko.AdminHandlerTest.testHandleAdminActionsInvalidOption(AdminHandlerTest.java:106)
 </failure>

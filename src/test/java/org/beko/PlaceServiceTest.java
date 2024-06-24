@@ -4,11 +4,14 @@ import org.beko.Entity.Place;
 import org.beko.Service.PlaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PlaceServiceTest {
     private PlaceService placeService;
 

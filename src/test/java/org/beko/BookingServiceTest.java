@@ -6,6 +6,8 @@ import org.beko.Entity.User;
 import org.beko.Service.BookingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 public class BookingServiceTest {
     private BookingService bookingService;
     private User user;

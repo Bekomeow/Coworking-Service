@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="13" failures="13" name="org.beko.UserHandlerTest" time="0.027" errors="0" skipped="0">
+<testsuite tests="13" failures="13" name="org.beko.UserHandlerTest" time="0.004" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.2.5"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.6+7-b469.82"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.1\jbr\bin"/>
     <property name="user.country.format" value="KZ"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="java.vm.vendor" value="JetBrains s.r.o."/>
     <property name="java.vendor.url" value="https://openjdk.java.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="user.country" value="RU"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="jbr.virtualization.information" value="No virtualization detected"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.6+7-b469.82"/>
@@ -63,9 +63,9 @@
     <property name="java.vendor.version" value="JBR-17.0.6+7-469.82-jcef"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewPlaces" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null
-	at org.beko.UserHandlerTest.testViewPlaces(UserHandlerTest.java:45)
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookings" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Service.BookingService.listBookings()&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.listBookings()&quot; because &quot;this.bookingService&quot; is null
+	at org.beko.UserHandlerTest.testViewBookings(UserHandlerTest.java:104)
 </failure>
   </testcase>
   <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testCancelBookingNotFound" time="0">
@@ -73,7 +73,37 @@
 	at org.beko.UserHandlerTest.testCancelBookingNotFound(UserHandlerTest.java:92)
 </failure>
   </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testCancelBookingSuccess" time="0">
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByUserNotFound" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testViewBookingsByUserNotFound(UserHandlerTest.java:125)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess(UserHandlerTest.java:137)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testBookPlaceSuccess" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testBookPlaceSuccess(UserHandlerTest.java:55)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByUserSuccess" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testViewBookingsByUserSuccess(UserHandlerTest.java:114)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testBookPlaceNotFound" time="0.001">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testBookPlaceNotFound(UserHandlerTest.java:71)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testHandleUserActionsLogout" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
+	at org.beko.UserHandlerTest.testHandleUserActionsLogout(UserHandlerTest.java:170)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testCancelBookingSuccess" time="0.001">
     <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
 	at org.beko.UserHandlerTest.testCancelBookingSuccess(UserHandlerTest.java:82)
 </failure>
@@ -83,14 +113,9 @@
 	at org.beko.UserHandlerTest.testViewBookingsByPlaceNotFound(UserHandlerTest.java:148)
 </failure>
   </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByUserSuccess" time="0.025">
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testHandleUserActionsInvalidOption" time="0.001">
     <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testViewBookingsByUserSuccess(UserHandlerTest.java:114)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testBookPlaceNotFound" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testBookPlaceNotFound(UserHandlerTest.java:71)
+	at org.beko.UserHandlerTest.testHandleUserActionsInvalidOption(UserHandlerTest.java:179)
 </failure>
   </testcase>
   <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByDate" time="0">
@@ -98,34 +123,9 @@
 	at org.beko.UserHandlerTest.testViewBookingsByDate(UserHandlerTest.java:160)
 </failure>
   </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess" time="0.001">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testViewBookingsByPlaceSuccess(UserHandlerTest.java:137)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testHandleUserActionsInvalidOption" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testHandleUserActionsInvalidOption(UserHandlerTest.java:179)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookingsByUserNotFound" time="0.001">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testViewBookingsByUserNotFound(UserHandlerTest.java:125)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testHandleUserActionsLogout" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testHandleUserActionsLogout(UserHandlerTest.java:170)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testBookPlaceSuccess" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Util.ScannerWrapper.nextLine()&quot; because &quot;this.scanner&quot; is null
-	at org.beko.UserHandlerTest.testBookPlaceSuccess(UserHandlerTest.java:55)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewBookings" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Service.BookingService.listBookings()&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.listBookings()&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.UserHandlerTest.testViewBookings(UserHandlerTest.java:104)
+  <testcase classname="org.beko.UserHandlerTest" name="org.beko.UserHandlerTest.testViewPlaces" time="0.001">
+    <failure message="Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.PlaceService.listPlaces()&quot; because &quot;this.placeService&quot; is null
+	at org.beko.UserHandlerTest.testViewPlaces(UserHandlerTest.java:45)
 </failure>
   </testcase>
 </testsuite>

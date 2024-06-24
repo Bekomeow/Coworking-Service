@@ -7,15 +7,14 @@ import org.beko.Service.BookingService;
 import org.beko.Service.PlaceService;
 import org.beko.Service.UserService;
 import org.beko.Util.ScannerWrapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.ArgumentMatchers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 public class MainHandlerTest {
@@ -29,11 +28,11 @@ public class MainHandlerTest {
 
     @BeforeEach
     public void setUp() {
-        scanner = Mockito.mock(ScannerWrapper.class);
-        userService = Mockito.mock(UserService.class);
-        adminService = Mockito.mock(AdminService.class);
-        placeService = Mockito.mock(PlaceService.class);
-        bookingService = Mockito.mock(BookingService.class);
+        scanner = mock(ScannerWrapper.class);
+        userService = mock(UserService.class);
+        adminService = mock(AdminService.class);
+        placeService = mock(PlaceService.class);
+        bookingService = mock(BookingService.class);
 
         mainHandler = new MainHandler(scanner, userService, placeService, bookingService, adminService);
     }
@@ -55,7 +54,7 @@ public class MainHandlerTest {
         when(scanner.nextLine()).thenReturn("testuser", "password");
 
         String errorMessage = "Username already exists.";
-        doThrow(new IllegalArgumentException(errorMessage)).when(userService).register(anyString(), anyString());
+        doThrow(new IllegalArgumentException(errorMessage)).when(userService).register(ArgumentMatchers.anyString(), ArgumentMatchers.anyString());
 
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
@@ -66,7 +65,7 @@ public class MainHandlerTest {
 
         verify(userService, times(1)).register("testuser", "password");
 
-        assertTrue(outContent.toString().contains(errorMessage));
+        Assertions.assertTrue(outContent.toString().contains(errorMessage));
     }
 }
 

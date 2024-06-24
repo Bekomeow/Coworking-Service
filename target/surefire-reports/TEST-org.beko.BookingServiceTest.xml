@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="6" failures="6" name="org.beko.BookingServiceTest" time="0.014" errors="0" skipped="0">
+<testsuite tests="6" failures="6" name="org.beko.BookingServiceTest" time="0.005" errors="0" skipped="0">
   <properties>
     <property name="idea.version" value="2022.2.5"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="17.0.6+7-b469.82"/>
     <property name="sun.boot.library.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2022.2.1\jbr\bin"/>
     <property name="user.country.format" value="KZ"/>
-    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="java.vm.vendor" value="JetBrains s.r.o."/>
     <property name="java.vendor.url" value="https://openjdk.java.net/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -17,7 +17,7 @@
     <property name="user.country" value="RU"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Coworking-Service-1"/>
+    <property name="user.dir" value="C:\Users\BEKZHAN\IdeaProjects\Ylab_HW"/>
     <property name="jbr.virtualization.information" value="No virtualization detected"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="17.0.6+7-b469.82"/>
@@ -63,34 +63,34 @@
     <property name="java.vendor.version" value="JBR-17.0.6+7-469.82-jcef"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testBookPlaceWithConflict" time="0.011">
+  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testBookPlaceSuccessfully" time="0.004">
     <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testBookPlaceWithConflict(BookingServiceTest.java:42)
+	at org.beko.BookingServiceTest.testBookPlaceSuccessfully(BookingServiceTest.java:35)
 </failure>
   </testcase>
-  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testBookPlaceSuccessfully" time="0">
+  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testBookPlaceWithConflict" time="0">
     <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testBookPlaceSuccessfully(BookingServiceTest.java:32)
+	at org.beko.BookingServiceTest.testBookPlaceWithConflict(BookingServiceTest.java:45)
 </failure>
   </testcase>
-  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testListBookingsByUser" time="0.001">
+  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testListBookingsByUser" time="0">
     <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testListBookingsByUser(BookingServiceTest.java:68)
-</failure>
-  </testcase>
-  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testListBookingsByPlace" time="0">
-    <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testListBookingsByPlace(BookingServiceTest.java:77)
+	at org.beko.BookingServiceTest.testListBookingsByUser(BookingServiceTest.java:71)
 </failure>
   </testcase>
   <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testListBookingsByDate" time="0.001">
     <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testListBookingsByDate(BookingServiceTest.java:86)
+	at org.beko.BookingServiceTest.testListBookingsByDate(BookingServiceTest.java:89)
 </failure>
   </testcase>
-  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testCancelBooking" time="0.001">
+  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testListBookingsByPlace" time="0">
     <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
-	at org.beko.BookingServiceTest.testCancelBooking(BookingServiceTest.java:58)
+	at org.beko.BookingServiceTest.testListBookingsByPlace(BookingServiceTest.java:80)
+</failure>
+  </testcase>
+  <testcase classname="org.beko.BookingServiceTest" name="org.beko.BookingServiceTest.testCancelBooking" time="0">
+    <failure message="Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null" type="java.lang.NullPointerException">java.lang.NullPointerException: Cannot invoke &quot;org.beko.Service.BookingService.bookPlace(org.beko.Entity.User, org.beko.Entity.Place, java.time.LocalDateTime, java.time.LocalDateTime)&quot; because &quot;this.bookingService&quot; is null
+	at org.beko.BookingServiceTest.testCancelBooking(BookingServiceTest.java:61)
 </failure>
   </testcase>
 </testsuite>
