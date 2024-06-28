@@ -1,0 +1,4 @@
+org\beko\AdminServiceTest.class
+org\beko\PlaceServiceTest.class
+org\beko\BookingServiceTest.class
+org\beko\UserServiceTest.class

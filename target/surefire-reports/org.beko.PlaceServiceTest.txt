@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: org.beko.PlaceServiceTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0 sec <<< FAILURE!
+org.beko.PlaceServiceTest.testAddPlace()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.addPlace(String, String)" because "this.placeService" is null
+	at org.beko.PlaceServiceTest.testAddPlace(PlaceServiceTest.java:25)
+
+org.beko.PlaceServiceTest.testDeletePlace()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.addPlace(String, String)" because "this.placeService" is null
+	at org.beko.PlaceServiceTest.testDeletePlace(PlaceServiceTest.java:42)
+
+org.beko.PlaceServiceTest.testUpdatePlace()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.addPlace(String, String)" because "this.placeService" is null
+	at org.beko.PlaceServiceTest.testUpdatePlace(PlaceServiceTest.java:33)
+
+org.beko.PlaceServiceTest.testListPlaces()  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.NullPointerException: Cannot invoke "org.beko.Service.PlaceService.addPlace(String, String)" because "this.placeService" is null
+	at org.beko.PlaceServiceTest.testListPlaces(PlaceServiceTest.java:49)
+
