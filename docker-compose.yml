@@ -1,0 +1,11 @@
+version: '3'
+services:
+  base-project-pg:
+    container_name: coworking-service-db
+    image: postgres:15
+    environment:
+      POSTGRES_USER: beko
+      POSTGRES_PASSWORD: beko
+      POSTGRES_DB: coworking_service_db
+    ports:
+      - '5433:5432'

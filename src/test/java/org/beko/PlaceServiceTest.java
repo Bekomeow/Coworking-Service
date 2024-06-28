@@ -1,7 +1,7 @@
 package org.beko;
 
-import org.beko.Entity.Place;
-import org.beko.Service.PlaceService;
+import org.beko.model.Place;
+import org.beko.service.PlaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

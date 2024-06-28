@@ -1,12 +1,14 @@
 package org.beko;
 
-import org.beko.Handler.MainHandler;
-import org.beko.Service.AdminService;
-import org.beko.Service.BookingService;
-import org.beko.Service.PlaceService;
-import org.beko.Service.UserService;
-import org.beko.Util.ScannerWrapper;
+import org.beko.liquibase.LiquibaseDemo;
+import org.beko.service.AdminService;
+import org.beko.service.BookingService;
+import org.beko.service.PlaceService;
+import org.beko.service.UserService;
+import org.beko.util.ConnectionManager;
+import org.beko.util.ScannerWrapper;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -17,8 +19,16 @@ public class Main {
         BookingService bookingService = new BookingService();
         AdminService adminService = new AdminService();
 
-        MainHandler mainHandler = new MainHandler(scanner, userService, placeService, bookingService, adminService);
+        try (var connection = ConnectionManager.getConnection()) {
+            LiquibaseDemo liquibaseDemo = LiquibaseDemo.getInstance();
+            liquibaseDemo.runMigrations(connection);
+            System.out.println(connection.toString());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-        mainHandler.handleMainActions();
+//        MainHandler mainHandler = new MainHandler(scanner, userService, placeService, bookingService, adminService);
+
+//        mainHandler.handleMainActions();
     }
 }

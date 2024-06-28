@@ -1,9 +1,9 @@
 package org.beko;
 
-import org.beko.Entity.Place;
-import org.beko.Handler.AdminHandler;
-import org.beko.Service.PlaceService;
-import org.beko.Util.ScannerWrapper;
+import org.beko.model.Place;
+import org.beko.handler.AdminHandler;
+import org.beko.service.PlaceService;
+import org.beko.util.ScannerWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

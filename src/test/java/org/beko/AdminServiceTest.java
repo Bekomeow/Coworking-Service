@@ -1,6 +1,6 @@
 package org.beko;
 
-import org.beko.Service.AdminService;
+import org.beko.service.AdminService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

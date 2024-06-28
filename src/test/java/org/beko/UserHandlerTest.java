@@ -1,13 +1,13 @@
 package org.beko;
 
-import org.beko.Entity.Booking;
-import org.beko.Entity.Place;
-import org.beko.Entity.User;
-import org.beko.Service.BookingService;
-import org.beko.Service.PlaceService;
-import org.beko.Service.UserService;
-import org.beko.Util.ScannerWrapper;
-import org.beko.Handler.UserHandler;
+import org.beko.model.Booking;
+import org.beko.model.Place;
+import org.beko.model.User;
+import org.beko.service.BookingService;
+import org.beko.service.PlaceService;
+import org.beko.service.UserService;
+import org.beko.util.ScannerWrapper;
+import org.beko.handler.UserHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

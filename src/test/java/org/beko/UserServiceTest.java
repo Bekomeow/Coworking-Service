@@ -1,7 +1,7 @@
 package org.beko;
 
-import org.beko.Entity.User;
-import org.beko.Service.UserService;
+import org.beko.model.User;
+import org.beko.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
