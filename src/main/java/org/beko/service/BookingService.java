@@ -8,8 +8,6 @@ import org.beko.model.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 public class BookingService {
@@ -22,8 +20,8 @@ public class BookingService {
 
         var bookings = BOOKING_DAO.findAll();
 
-        for(Booking booking: bookings) {
-            if(booking.getPlace().getId().equals(place.getId()) &&
+        for (Booking booking: bookings) {
+            if (booking.getPlace().getId().equals(place.getId()) &&
                     booking.getStartTime().isBefore(endTime) &&
                     booking.getEndTime().isAfter(startTime)) {
                 throw new IllegalArgumentException("Resource is already booked for the selected time.");
@@ -43,8 +41,8 @@ public class BookingService {
         return BOOKING_DAO.findAll();
     }
 
-    public List<Booking> listBookingsByUser(Long userId) {
-        return BOOKING_DAO.findByUserId(userId);
+    public List<Booking> listBookingsByUser(String username) {
+        return BOOKING_DAO.findByUsername(username);
     }
 
     public List<Booking> listBookingsByPlace(Long placeId) {
@@ -56,7 +54,7 @@ public class BookingService {
     }
 
     public boolean hasBooking(Long id) {
-        Optional<Booking> maybeBooking = Optional.ofNullable(BOOKING_DAO.findById(id))
+        Optional<Booking> maybeBooking = Optional.ofNullable(BOOKING_DAO.findById(id));
         return maybeBooking.isPresent();
     }
 }

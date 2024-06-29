@@ -1,17 +1,14 @@
 package org.beko.service;
 
 import org.beko.DAO.impl.UserDAOImpl;
-import org.beko.model.Place;
 import org.beko.model.User;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 public class UserService {
     private static final UserDAOImpl USER_DAO = new UserDAOImpl();
 
-    public User register(Long id, String username, String password) {
+    public User register(String username, String password) {
         if (USER_DAO.findByUsername(username) != null) {
             throw new IllegalArgumentException("User already exists.");
         }

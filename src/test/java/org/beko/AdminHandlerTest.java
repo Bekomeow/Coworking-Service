@@ -3,7 +3,7 @@ package org.beko;
 import org.beko.model.Place;
 import org.beko.handler.AdminHandler;
 import org.beko.service.PlaceService;
-import org.beko.util.ScannerWrapper;
+import org.beko.wrapper.ScannerWrapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

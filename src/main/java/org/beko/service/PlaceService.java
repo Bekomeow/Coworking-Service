@@ -4,8 +4,6 @@ import org.beko.DAO.impl.PlaceDAOImpl;
 import org.beko.model.Place;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 public class PlaceService {

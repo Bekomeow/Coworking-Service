@@ -1,29 +1,20 @@
 package org.beko.handler;
 
+import lombok.RequiredArgsConstructor;
+import org.beko.controller.ServiceController;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
-import org.beko.service.BookingService;
-import org.beko.service.PlaceService;
-import org.beko.service.UserService;
-import org.beko.util.ScannerWrapper;
+import org.beko.wrapper.ScannerWrapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class UserHandler {
     private final ScannerWrapper scanner;
-    private final UserService userService;
-    private final PlaceService placeService;
-    private final BookingService bookingService;
-
-    public UserHandler(ScannerWrapper scanner, UserService userService, PlaceService placeService, BookingService bookingService) {
-        this.scanner = scanner;
-        this.userService = userService;
-        this.placeService = placeService;
-        this.bookingService = bookingService;
-    }
+    private final ServiceController serviceController;
 
     public void handleUserActions(User user) {
         while (true) {
@@ -63,42 +54,42 @@ public class UserHandler {
 
     public void viewPlaces() {
         System.out.println("View Places");
-        List<Place> places = placeService.listPlaces();
+        List<Place> places = serviceController.listPlaces();
         places.forEach(System.out::println);
     }
 
     public void bookPlace(User user) {
         System.out.println("Book Place");
         System.out.print("Enter place ID: ");
-        String placeId = scanner.nextLine();
-        if (!placeService.hasPlace(placeId)) {
+        Long placeId = Long.valueOf(scanner.nextLine());
+        if (!serviceController.hasPlace(placeId)) {
             System.out.println("Place not found.");
             return;
         }
-        Place place = placeService.getPlaceById(placeId);
+        Place place = serviceController.getPlaceById(placeId).get();
         System.out.print("Enter start time (YYYY-MM-DDTHH:MM): ");
         LocalDateTime startTime = LocalDateTime.parse(scanner.nextLine());
         System.out.print("Enter end time (YYYY-MM-DDTHH:MM): ");
         LocalDateTime endTime = LocalDateTime.parse(scanner.nextLine());
-        bookingService.bookPlace(user, place, startTime, endTime);
+        serviceController.bookPlace(user, place, startTime, endTime);
         System.out.println("Place booked successfully.");
     }
 
     public void cancelBooking() {
         System.out.println("Cancel Booking");
         System.out.print("Enter booking ID: ");
-        String id = scanner.nextLine();
-        if (!bookingService.hasBooking(id)) {
+        Long id = Long.valueOf(scanner.nextLine());
+        if (!serviceController.hasBooking(id)) {
             System.out.println("Booking not found.");
             return;
         }
-        bookingService.cancelBooking(id);
+        serviceController.cancelBooking(id);
         System.out.println("Booking cancelled successfully.");
     }
 
     public void viewBookings() {
         System.out.println("View Bookings");
-        List<Booking> bookings = bookingService.listBookings();
+        List<Booking> bookings = serviceController.listBookings();
         bookings.forEach(System.out::println);
     }
 
@@ -106,23 +97,23 @@ public class UserHandler {
         System.out.println("View Bookings By User");
         System.out.print("Enter user name: ");
         String username = scanner.nextLine();
-        if (!userService.hasUser(username)) {
+        if (!serviceController.hasUser(username)) {
             System.out.println("User not found.");
             return;
         }
-        List<Booking> bookingsByUser = bookingService.listBookingsByUser(username);
+        List<Booking> bookingsByUser = serviceController.listBookingsByUser(username);
         bookingsByUser.forEach(System.out::println);
     }
 
     public void viewBookingsByPlace() {
         System.out.println("View Bookings By Place");
         System.out.print("Enter place ID: ");
-        String placeId = scanner.nextLine();
-        if (!placeService.hasPlace(placeId)) {
+        Long placeId = Long.valueOf(scanner.nextLine());
+        if (!serviceController.hasPlace(placeId)) {
             System.out.println("Place not found.");
             return;
         }
-        List<Booking> bookingsByPlace = bookingService.listBookingsByPlace(placeId);
+        List<Booking> bookingsByPlace = serviceController.listBookingsByPlace(placeId);
         bookingsByPlace.forEach(System.out::println);
     }
 
@@ -130,7 +121,7 @@ public class UserHandler {
         System.out.println("View Bookings By Date");
         System.out.print("Enter date (YYYY-MM-DD): ");
         LocalDate date = LocalDate.parse(scanner.nextLine());
-        List<Booking> bookingsByDate = bookingService.listBookingsByDate(date);
+        List<Booking> bookingsByDate = serviceController.listBookingsByDate(date);
         bookingsByDate.forEach(System.out::println);
     }
 }

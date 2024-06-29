@@ -1,15 +1,18 @@
-package org.beko.util;
+package org.beko.wrapper;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.Scanner;
 
+@RequiredArgsConstructor
 public class ScannerWrapper {
     private final Scanner scanner;
 
-    public ScannerWrapper(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
     public String nextLine() {
         return scanner.nextLine();
+    }
+
+    public void close() {
+        scanner.close();
     }
 }

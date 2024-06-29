@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BookingDAO extends DAO<Long, Booking> {
-    List<Booking> findByUserId(Long id);
+    List<Booking> findByUsername(String username);
 
     List<Booking> findByPlaceId(Long id);
 

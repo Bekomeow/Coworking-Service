@@ -15,7 +15,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public void save(Booking booking) {
-        String sql = "INSERT INTO booking (user_id, place_id, start_time, end_time) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO coworking.\"Booking\" (user_id, place_id, start_time, end_time) VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, booking.getUser().getId());
@@ -30,7 +30,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public Booking findById(Long id) {
-        String sql = "SELECT * FROM booking WHERE id = ?";
+        String sql = "SELECT * FROM coworking.\"Booking\" WHERE id = ?";
         Booking booking = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -53,7 +53,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public List<Booking> findAll() {
-        String sql = "SELECT * FROM booking";
+        String sql = "SELECT * FROM coworking.\"Booking\"";
         List<Booking> bookings = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -76,7 +76,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public void update(Booking booking) {
-        String sql = "UPDATE booking SET user_id = ?, place_id = ?, start_time = ?, end_time = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"Booking\" SET user_id = ?, place_id = ?, start_time = ?, end_time = ? WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, booking.getUser().getId());
@@ -92,7 +92,7 @@ public class BookingDAOImpl implements BookingDAO {
 
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM booking WHERE id = ?";
+        String sql = "DELETE FROM coworking.\"Booking\" WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -103,12 +103,12 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     @Override
-    public List<Booking> findByUserId(Long userId) {
+    public List<Booking> findByUsername(String username) {
         List<Booking> bookings = findAll();
         List<Booking> userBookings = new ArrayList<>();
 
         for (Booking booking: bookings) {
-            if (booking.getUser().getId().equals(userId)) {
+            if (booking.getUser().getUsername().equals(username)) {
                 userBookings.add(booking);
             }
         }

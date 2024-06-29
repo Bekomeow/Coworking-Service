@@ -6,7 +6,7 @@ import org.beko.model.User;
 import org.beko.service.BookingService;
 import org.beko.service.PlaceService;
 import org.beko.service.UserService;
-import org.beko.util.ScannerWrapper;
+import org.beko.wrapper.ScannerWrapper;
 import org.beko.handler.UserHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

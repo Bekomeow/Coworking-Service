@@ -12,7 +12,7 @@ public class PlaceDAOImpl implements PlaceDAO {
 
     @Override
     public void save(Place place) {
-        String sql = "INSERT INTO place (name, type) VALUES (?, ?)";
+        String sql = "INSERT INTO coworking.\"Place\" (name, type) VALUES (?, ?)";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
@@ -25,7 +25,7 @@ public class PlaceDAOImpl implements PlaceDAO {
 
     @Override
     public Place findById(Long id) {
-        String sql = "SELECT * FROM place WHERE id = ?";
+        String sql = "SELECT * FROM coworking.\"Place\" WHERE id = ?";
         Place place = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -44,7 +44,7 @@ public class PlaceDAOImpl implements PlaceDAO {
 
     @Override
     public List<Place> findAll() {
-        String sql = "SELECT * FROM place";
+        String sql = "SELECT * FROM coworking.\"Place\"";
         List<Place> places = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -63,7 +63,7 @@ public class PlaceDAOImpl implements PlaceDAO {
 
     @Override
     public void update(Place place) {
-        String sql = "UPDATE place SET name = ?, type = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"Place\" SET name = ?, type = ? WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
@@ -77,7 +77,7 @@ public class PlaceDAOImpl implements PlaceDAO {
 
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM place WHERE id = ?";
+        String sql = "DELETE FROM coworking.\"Place\" WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);

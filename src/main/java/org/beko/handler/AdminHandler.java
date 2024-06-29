@@ -1,19 +1,16 @@
 package org.beko.handler;
 
+import lombok.RequiredArgsConstructor;
+import org.beko.controller.ServiceController;
 import org.beko.model.Place;
-import org.beko.service.PlaceService;
-import org.beko.util.ScannerWrapper;
+import org.beko.wrapper.ScannerWrapper;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class AdminHandler {
     private final ScannerWrapper scanner;
-    private final PlaceService placeService;
-
-    public AdminHandler(ScannerWrapper scanner, PlaceService placeService) {
-        this.scanner = scanner;
-        this.placeService = placeService;
-    }
+    private final ServiceController serviceController;
 
     public void handleAdminActions() {
         while (true) {
@@ -47,7 +44,7 @@ public class AdminHandler {
 
     public void viewPlaces() {
         System.out.println("View Places");
-        List<Place> places = placeService.listPlaces();
+        List<Place> places = serviceController.listPlaces();
         places.forEach(System.out::println);
     }
 
@@ -61,11 +58,11 @@ public class AdminHandler {
             System.out.print("Enter place type (1/2): ");
             String type = scanner.nextLine();
             if (type.equals("1")) {
-                placeService.addPlace(name, "workspace");
+                serviceController.addPlace(name, "workspace");
                 System.out.println("Place added successfully.");
                 break;
             } else if (type.equals("2")) {
-                placeService.addPlace(name, "conference room");
+                serviceController.addPlace(name, "conference room");
                 System.out.println("Place added successfully.");
                 break;
             } else {
@@ -79,8 +76,8 @@ public class AdminHandler {
         while (true) {
             System.out.println("Update Place");
             System.out.print("Enter place ID: ");
-            String id = scanner.nextLine();
-            if (!placeService.hasPlace(id)) {
+            Long id = Long.valueOf(scanner.nextLine());
+            if (!serviceController.hasPlace(id)) {
                 System.out.println("Place not found.");
                 continue;
             }
@@ -91,11 +88,11 @@ public class AdminHandler {
             System.out.print("Enter place type (1/2): ");
             String type = scanner.nextLine();
             if (type.equals("1")) {
-                placeService.updatePlace(id, name, "workspace");
+                serviceController.updatePlace(id, name, "workspace");
                 System.out.println("Place updated successfully.");
                 break;
             } else if (type.equals("2")) {
-                placeService.updatePlace(id, name, "conference room");
+                serviceController.updatePlace(id, name, "conference room");
                 System.out.println("Place updated successfully.");
                 break;
             } else {
@@ -108,12 +105,12 @@ public class AdminHandler {
     public void deletePlace() {
         System.out.println("Delete Resource");
         System.out.print("Enter place ID: ");
-        String id = scanner.nextLine();
-        if (!placeService.hasPlace(id)) {
+        Long id = Long.valueOf(scanner.nextLine());
+        if (!serviceController.hasPlace(id)) {
             System.out.println("Place not found.");
             return;
         }
-        placeService.deletePlace(id);
+        serviceController.deletePlace(id);
         System.out.println("Place deleted successfully.");
     }
 }

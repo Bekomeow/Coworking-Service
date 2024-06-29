@@ -12,7 +12,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void save(User user) {
-        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        String sql = "INSERT INTO coworking.\"User\" (username, password) VALUES (?, ?)";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getUsername());
@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findById(Long id) {
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT * FROM coworking.\"User\" WHERE id = ?";
         User user = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -44,7 +44,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> findAll() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM coworking.\"User\"";
         List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -63,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void update(User user) {
-        String sql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"User\" SET username = ?, password = ? WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, user.getUsername());
@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM users WHERE id = ?";
+        String sql = "DELETE FROM coworking.\"User\" WHERE id = ?";
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -89,7 +89,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findByUsername(String username) {
-        String sql = "SELECT * FROM users WHERE username = ?";
+        String sql = "SELECT * FROM coworking.\"User\" WHERE username = ?";
         User user = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
