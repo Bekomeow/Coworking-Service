@@ -11,11 +11,19 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Handles user actions such as viewing places, booking places, and viewing bookings.
+ */
 @RequiredArgsConstructor
 public class UserHandler {
     private final ScannerWrapper scanner;
     private final ServiceController serviceController;
 
+    /**
+     * Handles the user actions by displaying the menu and processing user input.
+     *
+     * @param user the user performing the actions
+     */
     public void handleUserActions(User user) {
         while (true) {
             displayUserMenu();
@@ -38,6 +46,9 @@ public class UserHandler {
         }
     }
 
+    /**
+     * Displays the user menu.
+     */
     private void displayUserMenu() {
         System.out.println("-------USER MODE-------");
         System.out.println("1. View Places");
@@ -52,12 +63,20 @@ public class UserHandler {
         System.out.print("Choose an option: ");
     }
 
+    /**
+     * Views all places.
+     */
     public void viewPlaces() {
         System.out.println("View Places");
         List<Place> places = serviceController.listPlaces();
         places.forEach(System.out::println);
     }
 
+    /**
+     * Books a place for the user.
+     *
+     * @param user the user booking the place
+     */
     public void bookPlace(User user) {
         System.out.println("Book Place");
         System.out.print("Enter place ID: ");
@@ -75,6 +94,9 @@ public class UserHandler {
         System.out.println("Place booked successfully.");
     }
 
+    /**
+     * Cancels a booking.
+     */
     public void cancelBooking() {
         System.out.println("Cancel Booking");
         System.out.print("Enter booking ID: ");
@@ -87,12 +109,18 @@ public class UserHandler {
         System.out.println("Booking cancelled successfully.");
     }
 
+    /**
+     * Views all bookings.
+     */
     public void viewBookings() {
         System.out.println("View Bookings");
         List<Booking> bookings = serviceController.listBookings();
         bookings.forEach(System.out::println);
     }
 
+    /**
+     * Views bookings by a specific user.
+     */
     public void viewBookingsByUser() {
         System.out.println("View Bookings By User");
         System.out.print("Enter user name: ");
@@ -105,6 +133,9 @@ public class UserHandler {
         bookingsByUser.forEach(System.out::println);
     }
 
+    /**
+     * Views bookings by a specific place.
+     */
     public void viewBookingsByPlace() {
         System.out.println("View Bookings By Place");
         System.out.print("Enter place ID: ");
@@ -117,6 +148,9 @@ public class UserHandler {
         bookingsByPlace.forEach(System.out::println);
     }
 
+    /**
+     * Views bookings by a specific date.
+     */
     public void viewBookingsByDate() {
         System.out.println("View Bookings By Date");
         System.out.print("Enter date (YYYY-MM-DD): ");

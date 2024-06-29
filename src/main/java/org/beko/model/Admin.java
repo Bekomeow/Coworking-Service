@@ -3,6 +3,9 @@ package org.beko.model;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * Represents an admin in the system.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

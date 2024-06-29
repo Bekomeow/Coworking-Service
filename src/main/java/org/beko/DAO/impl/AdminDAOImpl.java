@@ -8,8 +8,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the AdminDAO interface for managing Admin entities in the database.
+ */
 public class AdminDAOImpl implements AdminDAO {
-
+    /**
+     * Saves a new Admin entity to the database.
+     *
+     * @param admin the Admin entity to be saved
+     */
     @Override
     public void save(Admin admin) {
         String sql = "INSERT INTO coworking.\"Admin\" (admin_name, password) VALUES (?, ?)";
@@ -23,6 +30,12 @@ public class AdminDAOImpl implements AdminDAO {
         }
     }
 
+    /**
+     * Finds an Admin entity by its ID.
+     *
+     * @param id the ID of the Admin entity to find
+     * @return the found Admin entity, or null if not found
+     */
     @Override
     public Admin findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Admin\" WHERE id = ?";
@@ -42,6 +55,11 @@ public class AdminDAOImpl implements AdminDAO {
         return admin;
     }
 
+    /**
+     * Finds all Admin entities in the database.
+     *
+     * @return a list of all Admin entities
+     */
     @Override
     public List<Admin> findAll() {
         String sql = "SELECT * FROM coworking.\"Admin\"";
@@ -61,6 +79,11 @@ public class AdminDAOImpl implements AdminDAO {
         return admins;
     }
 
+    /**
+     * Updates an existing Admin entity in the database.
+     *
+     * @param admin the Admin entity with updated information
+     */
     @Override
     public void update(Admin admin) {
         String sql = "UPDATE coworking.\"Admin\" SET admin_name = ?, password = ? WHERE id = ?";
@@ -75,6 +98,11 @@ public class AdminDAOImpl implements AdminDAO {
         }
     }
 
+    /**
+     * Deletes an Admin entity by its ID.
+     *
+     * @param id the ID of the Admin entity to be deleted
+     */
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Admin\" WHERE id = ?";

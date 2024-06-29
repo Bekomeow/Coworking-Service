@@ -5,9 +5,20 @@ import org.beko.model.User;
 
 import java.util.Optional;
 
+/**
+ * Service class for handling user operations.
+ */
 public class UserService {
     private static final UserDAOImpl USER_DAO = new UserDAOImpl();
 
+    /**
+     * Registers a new user with the specified username and password.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return the created User object
+     * @throws IllegalArgumentException if the user already exists
+     */
     public User register(String username, String password) {
         if (USER_DAO.findByUsername(username) != null) {
             throw new IllegalArgumentException("User already exists.");
@@ -18,6 +29,14 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Logs in a user with the specified username and password.
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return the logged-in User object
+     * @throws IllegalArgumentException if the username or password is invalid
+     */
     public User login(String username, String password) {
         User user = USER_DAO.findByUsername(username);
 
@@ -27,6 +46,12 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Checks if a user exists by their username.
+     *
+     * @param username the username of the user
+     * @return true if the user exists, false otherwise
+     */
     public boolean hasUser(String username) {
         Optional<User> maybeUser = Optional.ofNullable(USER_DAO.findByUsername(username));
         return maybeUser.isPresent();

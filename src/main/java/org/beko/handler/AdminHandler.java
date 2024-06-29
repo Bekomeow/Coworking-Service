@@ -7,11 +7,17 @@ import org.beko.wrapper.ScannerWrapper;
 
 import java.util.List;
 
+/**
+ * Handles admin actions such as viewing, adding, updating, and deleting places.
+ */
 @RequiredArgsConstructor
 public class AdminHandler {
     private final ScannerWrapper scanner;
     private final ServiceController serviceController;
 
+    /**
+     * Handles the admin actions by displaying the menu and processing user input.
+     */
     public void handleAdminActions() {
         while (true) {
             displayAdminMenu();
@@ -31,6 +37,9 @@ public class AdminHandler {
         }
     }
 
+    /**
+     * Displays the admin menu.
+     */
     private void displayAdminMenu() {
         System.out.println("------ADMIN MODE------");
         System.out.println("1. View Places");
@@ -42,12 +51,18 @@ public class AdminHandler {
         System.out.print("Choose an option: ");
     }
 
+    /**
+     * Views all places.
+     */
     public void viewPlaces() {
         System.out.println("View Places");
         List<Place> places = serviceController.listPlaces();
         places.forEach(System.out::println);
     }
 
+    /**
+     * Adds a new place.
+     */
     public void addPlace() {
         while (true) {
             System.out.println("Add Place");
@@ -72,6 +87,9 @@ public class AdminHandler {
         }
     }
 
+    /**
+     * Updates an existing place.
+     */
     public void updatePlace() {
         while (true) {
             System.out.println("Update Place");
@@ -102,6 +120,9 @@ public class AdminHandler {
         }
     }
 
+    /**
+     * Deletes a place.
+     */
     public void deletePlace() {
         System.out.println("Delete Resource");
         System.out.print("Enter place ID: ");

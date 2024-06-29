@@ -12,6 +12,9 @@ import org.beko.wrapper.ScannerWrapper;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+/**
+ * Runner class that starts the application and handles the main menu.
+ */
 @RequiredArgsConstructor
 public class Runner {
     private static final ScannerWrapper scanner = new ScannerWrapper(new Scanner(System.in));
@@ -20,6 +23,9 @@ public class Runner {
     private static final UserHandler userHandler = new UserHandler(scanner, serviceController);
     private static final MainHandler mainHandler = new MainHandler(scanner, serviceController, adminHandler, userHandler);
 
+    /**
+     * Runs the application, including initializing the database and displaying the main menu.
+     */
     public static void run() {
         try (var connection = ConnectionManager.getConnection()) {
             LiquibaseDemo liquibaseDemo = LiquibaseDemo.getInstance();

@@ -8,8 +8,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the UserDAO interface for managing User entities in the database.
+ */
 public class UserDAOImpl implements UserDAO {
-
+    /**
+     * Saves a new User entity to the database.
+     *
+     * @param user the User entity to be saved
+     */
     @Override
     public void save(User user) {
         String sql = "INSERT INTO coworking.\"User\" (username, password) VALUES (?, ?)";
@@ -23,6 +30,12 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * Finds a User entity by its ID.
+     *
+     * @param id the ID of the User entity to find
+     * @return the found User entity, or null if not found
+     */
     @Override
     public User findById(Long id) {
         String sql = "SELECT * FROM coworking.\"User\" WHERE id = ?";
@@ -42,6 +55,11 @@ public class UserDAOImpl implements UserDAO {
         return user;
     }
 
+    /**
+     * Finds all User entities in the database.
+     *
+     * @return a list of all User entities
+     */
     @Override
     public List<User> findAll() {
         String sql = "SELECT * FROM coworking.\"User\"";
@@ -61,6 +79,11 @@ public class UserDAOImpl implements UserDAO {
         return users;
     }
 
+    /**
+     * Updates an existing User entity in the database.
+     *
+     * @param user the User entity with updated information
+     */
     @Override
     public void update(User user) {
         String sql = "UPDATE coworking.\"User\" SET username = ?, password = ? WHERE id = ?";
@@ -75,6 +98,11 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * Deletes a User entity by its ID.
+     *
+     * @param id the ID of the User entity to be deleted
+     */
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"User\" WHERE id = ?";
@@ -87,6 +115,12 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * Finds a User entity by its username.
+     *
+     * @param username the username of the User entity to find
+     * @return the found User entity, or null if not found
+     */
     @Override
     public User findByUsername(String username) {
         String sql = "SELECT * FROM coworking.\"User\" WHERE username = ?";

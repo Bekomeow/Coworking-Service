@@ -5,6 +5,9 @@ import org.beko.controller.ServiceController;
 import org.beko.model.User;
 import org.beko.wrapper.ScannerWrapper;
 
+/**
+ * Handles main actions such as user registration, user login, and admin login.
+ */
 @RequiredArgsConstructor
 public class MainHandler {
     private final ScannerWrapper scanner;
@@ -12,6 +15,9 @@ public class MainHandler {
     private final AdminHandler adminHandler;
     private final UserHandler userHandler;
 
+    /**
+     * Handles user registration by prompting for username and password.
+     */
     public void handleUserRegistration() {
         System.out.println("Register");
         System.out.print("Enter username: ");
@@ -26,7 +32,9 @@ public class MainHandler {
         }
     }
 
-
+    /**
+     * Handles user login by prompting for username and password.
+     */
     public void handleUserLogin() {
         System.out.println("Login");
         System.out.print("Enter username: ");
@@ -42,6 +50,9 @@ public class MainHandler {
         }
     }
 
+    /**
+     * Handles admin login by prompting for admin name and password.
+     */
     public void handleAdminLogin() {
         System.out.println("Login as Admin");
         System.out.print("Enter admin name: ");

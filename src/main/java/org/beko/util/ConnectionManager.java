@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Manages database connections using a connection pool.
+ */
 public final class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String USERNAME_KEY = "db.username";
@@ -23,6 +26,9 @@ public final class ConnectionManager {
         initConnectionPool();
     }
 
+    /**
+     * Initializes the connection pool.
+     */
     private static void initConnectionPool() {
         var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
         var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
@@ -39,6 +45,11 @@ public final class ConnectionManager {
         }
     }
 
+    /**
+     * Gets a connection from the pool.
+     *
+     * @return a database connection
+     */
     public static Connection getConnection() {
         try {
             return pool.take();
@@ -47,6 +58,9 @@ public final class ConnectionManager {
         }
     }
 
+    /**
+     * Loads the database driver.
+     */
     private static void loadDriver() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -59,6 +73,11 @@ public final class ConnectionManager {
 
     }
 
+    /**
+     * Opens a new database connection.
+     *
+     * @return a new database connection
+     */
     public static Connection open() {
         try {
             return DriverManager.getConnection(
@@ -71,6 +90,9 @@ public final class ConnectionManager {
         }
     }
 
+    /**
+     * Closes all connections in the pool.
+     */
     public static void closePool() {
         for (Connection connection:sourceConnection) {
             try {

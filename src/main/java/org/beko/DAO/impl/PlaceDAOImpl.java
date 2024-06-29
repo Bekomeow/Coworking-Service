@@ -8,8 +8,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the PlaceDAO interface for managing Place entities in the database.
+ */
 public class PlaceDAOImpl implements PlaceDAO {
-
+    /**
+     * Saves a new Place entity to the database.
+     *
+     * @param place the Place entity to be saved
+     */
     @Override
     public void save(Place place) {
         String sql = "INSERT INTO coworking.\"Place\" (name, type) VALUES (?, ?)";
@@ -23,6 +30,12 @@ public class PlaceDAOImpl implements PlaceDAO {
         }
     }
 
+    /**
+     * Finds a Place entity by its ID.
+     *
+     * @param id the ID of the Place entity to find
+     * @return the found Place entity, or null if not found
+     */
     @Override
     public Place findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Place\" WHERE id = ?";
@@ -42,6 +55,11 @@ public class PlaceDAOImpl implements PlaceDAO {
         return place;
     }
 
+    /**
+     * Finds all Place entities in the database.
+     *
+     * @return a list of all Place entities
+     */
     @Override
     public List<Place> findAll() {
         String sql = "SELECT * FROM coworking.\"Place\"";
@@ -61,6 +79,11 @@ public class PlaceDAOImpl implements PlaceDAO {
         return places;
     }
 
+    /**
+     * Updates an existing Place entity in the database.
+     *
+     * @param place the Place entity with updated information
+     */
     @Override
     public void update(Place place) {
         String sql = "UPDATE coworking.\"Place\" SET name = ?, type = ? WHERE id = ?";
@@ -75,6 +98,11 @@ public class PlaceDAOImpl implements PlaceDAO {
         }
     }
 
+    /**
+     * Deletes a Place entity by its ID.
+     *
+     * @param id the ID of the Place entity to be deleted
+     */
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Place\" WHERE id = ?";

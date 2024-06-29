@@ -9,10 +9,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the BookingDAO interface for managing Booking entities in the database.
+ */
 public class BookingDAOImpl implements BookingDAO {
     private static final PlaceDAOImpl PLACE_DAO = new PlaceDAOImpl();
     private static final UserDAOImpl USER_DAO = new UserDAOImpl();
 
+    /**
+     * Saves a new Booking entity to the database.
+     *
+     * @param booking the Booking entity to be saved
+     */
     @Override
     public void save(Booking booking) {
         String sql = "INSERT INTO coworking.\"Booking\" (user_id, place_id, start_time, end_time) VALUES (?, ?, ?, ?)";
@@ -28,6 +36,12 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Finds a Booking entity by its ID.
+     *
+     * @param id the ID of the Booking entity to find
+     * @return the found Booking entity, or null if not found
+     */
     @Override
     public Booking findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Booking\" WHERE id = ?";
@@ -51,6 +65,11 @@ public class BookingDAOImpl implements BookingDAO {
         return booking;
     }
 
+    /**
+     * Finds all Booking entities in the database.
+     *
+     * @return a list of all Booking entities
+     */
     @Override
     public List<Booking> findAll() {
         String sql = "SELECT * FROM coworking.\"Booking\"";
@@ -74,6 +93,11 @@ public class BookingDAOImpl implements BookingDAO {
         return bookings;
     }
 
+    /**
+     * Updates an existing Booking entity in the database.
+     *
+     * @param booking the Booking entity with updated information
+     */
     @Override
     public void update(Booking booking) {
         String sql = "UPDATE coworking.\"Booking\" SET user_id = ?, place_id = ?, start_time = ?, end_time = ? WHERE id = ?";
@@ -90,6 +114,11 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Deletes a Booking entity by its ID.
+     *
+     * @param id the ID of the Booking entity to be deleted
+     */
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Booking\" WHERE id = ?";
@@ -102,6 +131,12 @@ public class BookingDAOImpl implements BookingDAO {
         }
     }
 
+    /**
+     * Finds Booking entities by a user's username.
+     *
+     * @param username the username to search for
+     * @return a list of Booking entities associated with the given username
+     */
     @Override
     public List<Booking> findByUsername(String username) {
         List<Booking> bookings = findAll();
@@ -115,6 +150,12 @@ public class BookingDAOImpl implements BookingDAO {
         return userBookings;
     }
 
+    /**
+     * Finds Booking entities by a place ID.
+     *
+     * @param placeId the place ID to search for
+     * @return a list of Booking entities associated with the given place ID
+     */
     @Override
     public List<Booking> findByPlaceId(Long placeId) {
         List<Booking> bookings = findAll();
@@ -128,6 +169,12 @@ public class BookingDAOImpl implements BookingDAO {
         return placeBookings;
     }
 
+    /**
+     * Finds Booking entities by a specific date.
+     *
+     * @param date the date to search for
+     * @return a list of Booking entities associated with the given date
+     */
     @Override
     public List<Booking> findByDate(LocalDate date) {
         List<Booking> bookings = findAll();
