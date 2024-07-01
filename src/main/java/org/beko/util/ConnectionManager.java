@@ -12,31 +12,39 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Manages database connections using a connection pool.
  */
-public final class ConnectionManager {
+public class ConnectionManager {
     private static final String PASSWORD_KEY = "db.password";
     private static final String USERNAME_KEY = "db.username";
     private static final String URl_KEY = "db.url";
     private static final String POOL_SIZE_KEY = "db.pool.size";
     private static final int DEFAULT_POOL_SIZE = 5;
-    private static BlockingQueue<Connection> pool;
-    private static List<Connection> sourceConnection;
+    private BlockingQueue<Connection> pool;
+    private List<Connection> sourceConnection;
 
-    static {
+    public ConnectionManager() {
         loadDriver();
-        initConnectionPool();
+        initConnectionPool(
+                PropertiesUtil.get(URl_KEY),
+                PropertiesUtil.get(USERNAME_KEY),
+                PropertiesUtil.get(PASSWORD_KEY));
+    }
+
+    public ConnectionManager(String url, String username, String password) {
+        loadDriver();
+        initConnectionPool(url, username, password);
     }
 
     /**
      * Initializes the connection pool.
      */
-    private static void initConnectionPool() {
+    private void initConnectionPool(String url, String username, String password) {
         var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
         var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
         sourceConnection = new ArrayList<>(size);
 
         for (int i = 0; i < size; i++) {
-            var connection = open();
+            var connection = open(url, username, password);
             var proxyConnection = (Connection) Proxy.newProxyInstance(ConnectionManager.class.getClassLoader(), new Class[]{Connection.class},
                     (proxy, method, objects) -> method.getName().equals("close")
                             ? pool.add((Connection) proxy) : method.invoke(connection, objects));
@@ -50,7 +58,7 @@ public final class ConnectionManager {
      *
      * @return a database connection
      */
-    public static Connection getConnection() {
+    public Connection getConnection() {
         try {
             return pool.take();
         } catch (InterruptedException e) {
@@ -61,7 +69,7 @@ public final class ConnectionManager {
     /**
      * Loads the database driver.
      */
-    private static void loadDriver() {
+    private void loadDriver() {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -69,21 +77,17 @@ public final class ConnectionManager {
         }
     }
 
-    private ConnectionManager() {
-
-    }
-
     /**
      * Opens a new database connection.
      *
      * @return a new database connection
      */
-    public static Connection open() {
+    public Connection open(String url, String username, String password) {
         try {
             return DriverManager.getConnection(
-                    PropertiesUtil.get(URl_KEY),
-                    PropertiesUtil.get(USERNAME_KEY),
-                    PropertiesUtil.get(PASSWORD_KEY)
+                    url,
+                    username,
+                    password
             );
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -93,7 +97,7 @@ public final class ConnectionManager {
     /**
      * Closes all connections in the pool.
      */
-    public static void closePool() {
+    public void closePool() {
         for (Connection connection:sourceConnection) {
             try {
                 connection.close();

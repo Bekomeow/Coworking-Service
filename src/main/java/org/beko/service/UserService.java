@@ -2,6 +2,7 @@ package org.beko.service;
 
 import org.beko.DAO.impl.UserDAOImpl;
 import org.beko.model.User;
+import org.beko.util.ConnectionManager;
 
 import java.util.Optional;
 
@@ -9,7 +10,11 @@ import java.util.Optional;
  * Service class for handling user operations.
  */
 public class UserService {
-    private static final UserDAOImpl USER_DAO = new UserDAOImpl();
+    private final UserDAOImpl USER_DAO;
+
+    public UserService(ConnectionManager connectionManager) {
+        USER_DAO = new UserDAOImpl(connectionManager);
+    }
 
     /**
      * Registers a new user with the specified username and password.

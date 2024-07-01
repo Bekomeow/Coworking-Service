@@ -7,6 +7,7 @@ import org.beko.service.AdminService;
 import org.beko.service.BookingService;
 import org.beko.service.PlaceService;
 import org.beko.service.UserService;
+import org.beko.util.ConnectionManager;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,10 +20,17 @@ import java.util.Optional;
  */
 
 public class ServiceController {
-    private static final AdminService adminService = new AdminService();
-    private static final UserService userService = new UserService();
-    private static final PlaceService placeService = new PlaceService();
-    private static final BookingService bookingService = new BookingService();
+    private final AdminService adminService;
+    private final UserService userService;
+    private final PlaceService placeService;
+    private final BookingService bookingService;
+
+    public ServiceController(ConnectionManager connectionManager) {
+        adminService = new AdminService(connectionManager);
+        userService = new UserService(connectionManager);
+        placeService = new PlaceService(connectionManager);
+        bookingService = new BookingService(connectionManager);
+    }
 
     /**
      * Logs in as an admin.

@@ -17,8 +17,9 @@ import java.util.Scanner;
  */
 @RequiredArgsConstructor
 public class Runner {
+    private static final ConnectionManager connectionManager = new ConnectionManager();
     private static final ScannerWrapper scanner = new ScannerWrapper(new Scanner(System.in));
-    private static final ServiceController serviceController = new ServiceController();
+    private static final ServiceController serviceController = new ServiceController(connectionManager);
     private static final AdminHandler adminHandler = new AdminHandler(scanner ,serviceController);
     private static final UserHandler userHandler = new UserHandler(scanner, serviceController);
     private static final MainHandler mainHandler = new MainHandler(scanner, serviceController, adminHandler, userHandler);
@@ -27,7 +28,7 @@ public class Runner {
      * Runs the application, including initializing the database and displaying the main menu.
      */
     public static void run() {
-        try (var connection = ConnectionManager.getConnection()) {
+        try (var connection = connectionManager.getConnection()) {
             LiquibaseDemo liquibaseDemo = LiquibaseDemo.getInstance();
             liquibaseDemo.runMigrations(connection);
         } catch (SQLException e) {
@@ -50,6 +51,7 @@ public class Runner {
                 case "3" -> mainHandler.handleAdminLogin();
                 case "4" -> {
                     System.out.println("Exit");
+                    connectionManager.closePool();
                     scanner.close();
                     System.exit(0);
                 }

@@ -4,6 +4,7 @@ import org.beko.DAO.impl.BookingDAOImpl;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
+import org.beko.util.ConnectionManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.Optional;
  * Service class for handling booking operations.
  */
 public class BookingService {
-    private static final BookingDAOImpl BOOKING_DAO = new BookingDAOImpl();
+    private final BookingDAOImpl BOOKING_DAO;
+
+    public BookingService(ConnectionManager connectionManager) {
+        BOOKING_DAO = new BookingDAOImpl(connectionManager);
+    }
 
     /**
      * Books a place for a user for the specified time period.

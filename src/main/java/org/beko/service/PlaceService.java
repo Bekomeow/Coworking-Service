@@ -2,6 +2,7 @@ package org.beko.service;
 
 import org.beko.DAO.impl.PlaceDAOImpl;
 import org.beko.model.Place;
+import org.beko.util.ConnectionManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,11 @@ import java.util.Optional;
  * Service class for handling place operations.
  */
 public class PlaceService {
-    private static final PlaceDAOImpl PLACE_DAO = new PlaceDAOImpl();
+    private final PlaceDAOImpl PLACE_DAO;
+
+    public PlaceService(ConnectionManager connectionManager) {
+        PLACE_DAO = new PlaceDAOImpl(connectionManager);
+    }
 
     /**
      * Adds a new place with the specified name and type.

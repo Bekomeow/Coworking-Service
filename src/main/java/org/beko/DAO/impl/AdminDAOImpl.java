@@ -1,5 +1,6 @@
 package org.beko.DAO.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.beko.DAO.AdminDAO;
 import org.beko.model.Admin;
 import org.beko.util.ConnectionManager;
@@ -11,7 +12,9 @@ import java.util.List;
 /**
  * Implementation of the AdminDAO interface for managing Admin entities in the database.
  */
+@RequiredArgsConstructor
 public class AdminDAOImpl implements AdminDAO {
+    private final ConnectionManager connectionManager;
     /**
      * Saves a new Admin entity to the database.
      *
@@ -20,7 +23,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public void save(Admin admin) {
         String sql = "INSERT INTO coworking.\"Admin\" (admin_name, password) VALUES (?, ?)";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, admin.getAdminName());
             statement.setString(2, admin.getAdminPassword());
@@ -40,7 +43,7 @@ public class AdminDAOImpl implements AdminDAO {
     public Admin findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Admin\" WHERE id = ?";
         Admin admin = null;
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -64,7 +67,7 @@ public class AdminDAOImpl implements AdminDAO {
     public List<Admin> findAll() {
         String sql = "SELECT * FROM coworking.\"Admin\"";
         List<Admin> admins = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -87,7 +90,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public void update(Admin admin) {
         String sql = "UPDATE coworking.\"Admin\" SET admin_name = ?, password = ? WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, admin.getAdminName());
             statement.setString(2, admin.getAdminPassword());
@@ -106,7 +109,7 @@ public class AdminDAOImpl implements AdminDAO {
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Admin\" WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.executeUpdate();

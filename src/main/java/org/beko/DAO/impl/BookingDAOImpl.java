@@ -13,8 +13,15 @@ import java.util.List;
  * Implementation of the BookingDAO interface for managing Booking entities in the database.
  */
 public class BookingDAOImpl implements BookingDAO {
-    private static final PlaceDAOImpl PLACE_DAO = new PlaceDAOImpl();
-    private static final UserDAOImpl USER_DAO = new UserDAOImpl();
+    private final ConnectionManager connectionManager;
+    private final PlaceDAOImpl PLACE_DAO;
+    private final UserDAOImpl USER_DAO;
+
+    public BookingDAOImpl(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
+        PLACE_DAO = new PlaceDAOImpl(connectionManager);
+        USER_DAO = new UserDAOImpl(connectionManager);
+    }
 
     /**
      * Saves a new Booking entity to the database.
@@ -24,7 +31,7 @@ public class BookingDAOImpl implements BookingDAO {
     @Override
     public void save(Booking booking) {
         String sql = "INSERT INTO coworking.\"Booking\" (user_id, place_id, start_time, end_time) VALUES (?, ?, ?, ?)";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, booking.getUser().getId());
             statement.setLong(2, booking.getPlace().getId());
@@ -46,7 +53,7 @@ public class BookingDAOImpl implements BookingDAO {
     public Booking findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Booking\" WHERE id = ?";
         Booking booking = null;
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -74,7 +81,7 @@ public class BookingDAOImpl implements BookingDAO {
     public List<Booking> findAll() {
         String sql = "SELECT * FROM coworking.\"Booking\"";
         List<Booking> bookings = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -101,7 +108,7 @@ public class BookingDAOImpl implements BookingDAO {
     @Override
     public void update(Booking booking) {
         String sql = "UPDATE coworking.\"Booking\" SET user_id = ?, place_id = ?, start_time = ?, end_time = ? WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, booking.getUser().getId());
             statement.setLong(2, booking.getPlace().getId());
@@ -122,7 +129,7 @@ public class BookingDAOImpl implements BookingDAO {
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Booking\" WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.executeUpdate();

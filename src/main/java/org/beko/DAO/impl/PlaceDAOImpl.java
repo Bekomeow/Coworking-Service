@@ -1,5 +1,6 @@
 package org.beko.DAO.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.beko.DAO.PlaceDAO;
 import org.beko.model.Place;
 import org.beko.util.ConnectionManager;
@@ -11,7 +12,9 @@ import java.util.List;
 /**
  * Implementation of the PlaceDAO interface for managing Place entities in the database.
  */
+@RequiredArgsConstructor
 public class PlaceDAOImpl implements PlaceDAO {
+    private final ConnectionManager connectionManager;
     /**
      * Saves a new Place entity to the database.
      *
@@ -20,7 +23,7 @@ public class PlaceDAOImpl implements PlaceDAO {
     @Override
     public void save(Place place) {
         String sql = "INSERT INTO coworking.\"Place\" (name, type) VALUES (?, ?)";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
             statement.setString(2, place.getType());
@@ -40,7 +43,7 @@ public class PlaceDAOImpl implements PlaceDAO {
     public Place findById(Long id) {
         String sql = "SELECT * FROM coworking.\"Place\" WHERE id = ?";
         Place place = null;
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -64,7 +67,7 @@ public class PlaceDAOImpl implements PlaceDAO {
     public List<Place> findAll() {
         String sql = "SELECT * FROM coworking.\"Place\"";
         List<Place> places = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
@@ -87,7 +90,7 @@ public class PlaceDAOImpl implements PlaceDAO {
     @Override
     public void update(Place place) {
         String sql = "UPDATE coworking.\"Place\" SET name = ?, type = ? WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
             statement.setString(2, place.getType());
@@ -106,7 +109,7 @@ public class PlaceDAOImpl implements PlaceDAO {
     @Override
     public void deleteById(Long id) {
         String sql = "DELETE FROM coworking.\"Place\" WHERE id = ?";
-        try (Connection connection = ConnectionManager.getConnection();
+        try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             statement.executeUpdate();

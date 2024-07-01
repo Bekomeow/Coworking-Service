@@ -2,6 +2,7 @@ package org.beko.service;
 
 import org.beko.DAO.impl.AdminDAOImpl;
 import org.beko.model.Admin;
+import org.beko.util.ConnectionManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,11 @@ import java.util.Optional;
  * Service class for handling admin operations.
  */
 public class AdminService {
-    private static final AdminDAOImpl ADMIN_DAO = new AdminDAOImpl();
+    private final AdminDAOImpl ADMIN_DAO;
+
+    public AdminService(ConnectionManager connectionManager) {
+        ADMIN_DAO = new AdminDAOImpl(connectionManager);
+    }
 
     /**
      * Logs in an admin with the specified name and password.
