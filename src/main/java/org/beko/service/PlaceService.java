@@ -1,22 +1,11 @@
 package org.beko.service;
 
-import org.beko.DAO.impl.PlaceDAOImpl;
 import org.beko.model.Place;
-import org.beko.util.ConnectionManager;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service class for handling place operations.
- */
-public class PlaceService {
-    private final PlaceDAOImpl PLACE_DAO;
-
-    public PlaceService(ConnectionManager connectionManager) {
-        PLACE_DAO = new PlaceDAOImpl(connectionManager);
-    }
-
+public interface PlaceService {
     /**
      * Adds a new place with the specified name and type.
      *
@@ -24,11 +13,7 @@ public class PlaceService {
      * @param type the type of the place (workspace or conference room)
      * @return the created Place object
      */
-    public Place addPlace(String name, String type) {
-        Place place = new Place(name, type);
-        PLACE_DAO.save(place);
-        return place;
-    }
+    Place addPlace(String name, String type);
 
     /**
      * Updates a place with the specified ID, name, and type.
@@ -37,10 +22,7 @@ public class PlaceService {
      * @param name the new name of the place
      * @param type the new type of the place
      */
-    public void updatePlace(Long id, String name, String type) {
-        Place place = new Place(id, name, type);
-        PLACE_DAO.update(place);
-    }
+    void updatePlace(Long id, String name, String type);
 
     /**
      * Checks if a place exists by its ID.
@@ -48,28 +30,21 @@ public class PlaceService {
      * @param id the place ID
      * @return true if the place exists, false otherwise
      */
-    public boolean hasPlace(Long id) {
-        Optional<Place> maybePlace = Optional.ofNullable(PLACE_DAO.findById(id));
-        return maybePlace.isPresent();
-    }
+    boolean hasPlace(Long id);
 
     /**
      * Deletes a place by its ID.
      *
      * @param id the place ID
      */
-    public void deletePlace(Long id) {
-        PLACE_DAO.deleteById(id);
-    }
+    void deletePlace(Long id);
 
     /**
      * Lists all places.
      *
      * @return a list of all places
      */
-    public List<Place> listPlaces() {
-        return PLACE_DAO.findAll();
-    }
+    List<Place> listPlaces();
 
     /**
      * Retrieves a place by its ID.
@@ -77,7 +52,5 @@ public class PlaceService {
      * @param id the place ID
      * @return an Optional containing the place if found, or an empty Optional if not found
      */
-    public Optional<Place> getPlaceById(Long id) {
-        return Optional.ofNullable(PLACE_DAO.findById(id));
-    }
+    Optional<Place> getPlaceById(Long id);
 }

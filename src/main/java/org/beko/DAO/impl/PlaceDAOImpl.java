@@ -22,7 +22,7 @@ public class PlaceDAOImpl implements PlaceDAO {
      */
     @Override
     public void save(Place place) {
-        String sql = "INSERT INTO coworking.\"Place\" (name, type) VALUES (?, ?)";
+        String sql = "INSERT INTO coworking.\"place\" (name, type) VALUES (?, ?)";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
@@ -41,7 +41,7 @@ public class PlaceDAOImpl implements PlaceDAO {
      */
     @Override
     public Place findById(Long id) {
-        String sql = "SELECT * FROM coworking.\"Place\" WHERE id = ?";
+        String sql = "SELECT * FROM coworking.\"place\" WHERE id = ?";
         Place place = null;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -65,7 +65,7 @@ public class PlaceDAOImpl implements PlaceDAO {
      */
     @Override
     public List<Place> findAll() {
-        String sql = "SELECT * FROM coworking.\"Place\"";
+        String sql = "SELECT * FROM coworking.\"place\"";
         List<Place> places = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -89,7 +89,7 @@ public class PlaceDAOImpl implements PlaceDAO {
      */
     @Override
     public void update(Place place) {
-        String sql = "UPDATE coworking.\"Place\" SET name = ?, type = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"place\" SET name = ?, type = ? WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, place.getName());
@@ -108,7 +108,7 @@ public class PlaceDAOImpl implements PlaceDAO {
      */
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM coworking.\"Place\" WHERE id = ?";
+        String sql = "DELETE FROM coworking.\"place\" WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);

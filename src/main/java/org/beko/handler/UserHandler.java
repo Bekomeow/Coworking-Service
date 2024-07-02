@@ -9,6 +9,7 @@ import org.beko.wrapper.ScannerWrapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
@@ -85,13 +86,22 @@ public class UserHandler {
             System.out.println("Place not found.");
             return;
         }
-        Place place = serviceController.getPlaceById(placeId).get();
-        System.out.print("Enter start time (YYYY-MM-DDTHH:MM): ");
-        LocalDateTime startTime = LocalDateTime.parse(scanner.nextLine());
-        System.out.print("Enter end time (YYYY-MM-DDTHH:MM): ");
-        LocalDateTime endTime = LocalDateTime.parse(scanner.nextLine());
-        serviceController.bookPlace(user, place, startTime, endTime);
-        System.out.println("Place booked successfully.");
+        while (true) {
+            try {
+                Place place = serviceController.getPlaceById(placeId).get();
+                System.out.print("Enter start time (YYYY-MM-DDTHH:MM): ");
+                LocalDateTime startTime = LocalDateTime.parse(scanner.nextLine());
+                System.out.print("Enter end time (YYYY-MM-DDTHH:MM): ");
+                LocalDateTime endTime = LocalDateTime.parse(scanner.nextLine());
+                serviceController.bookPlace(user, place, startTime, endTime);
+                System.out.println("Place booked successfully.");
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid input, please try again.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     /**

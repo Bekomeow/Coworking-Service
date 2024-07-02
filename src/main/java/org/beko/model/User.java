@@ -1,7 +1,8 @@
 package org.beko.model;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a user in the system.
@@ -9,12 +10,10 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User {
-    Long id;
-    String username;
-    String password;
+    private Long id;
+    private String username;
+    private String password;
 
     /**
      * Constructs a new User with the specified username and password.

@@ -1,26 +1,14 @@
 package org.beko.service;
 
-import org.beko.DAO.impl.BookingDAOImpl;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
-import org.beko.util.ConnectionManager;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
-/**
- * Service class for handling booking operations.
- */
-public class BookingService {
-    private final BookingDAOImpl BOOKING_DAO;
-
-    public BookingService(ConnectionManager connectionManager) {
-        BOOKING_DAO = new BookingDAOImpl(connectionManager);
-    }
-
+public interface BookingService {
     /**
      * Books a place for a user for the specified time period.
      *
@@ -31,43 +19,21 @@ public class BookingService {
      * @return the created Booking object
      * @throws IllegalArgumentException if the start time is after the end time or if the place is already booked
      */
-    public Booking bookPlace(User user, Place place, LocalDateTime startTime, LocalDateTime endTime) {
-        if (startTime.isAfter(endTime)) {
-            throw new IllegalArgumentException("Start time must be before  end time.");
-        }
-
-        var bookings = BOOKING_DAO.findAll();
-
-        for (Booking booking: bookings) {
-            if (booking.getPlace().getId().equals(place.getId()) &&
-                    booking.getStartTime().isBefore(endTime) &&
-                    booking.getEndTime().isAfter(startTime)) {
-                throw new IllegalArgumentException("Resource is already booked for the selected time.");
-            }
-        }
-
-        Booking booking = new Booking(user, place, startTime, endTime);
-        BOOKING_DAO.save(booking);
-        return booking;
-    }
+    Booking bookPlace(User user, Place place, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * Cancels a booking by its ID.
      *
      * @param id the booking ID
      */
-    public void cancelBooking(Long id) {
-        BOOKING_DAO.deleteById(id);
-    }
+    void cancelBooking(Long id);
 
     /**
      * Lists all bookings.
      *
      * @return a list of all bookings
      */
-    public List<Booking> listBookings() {
-        return BOOKING_DAO.findAll();
-    }
+    List<Booking> listBookings();
 
     /**
      * Lists bookings by username.
@@ -75,9 +41,7 @@ public class BookingService {
      * @param username the username
      * @return a list of bookings by the specified user
      */
-    public List<Booking> listBookingsByUser(String username) {
-        return BOOKING_DAO.findByUsername(username);
-    }
+    List<Booking> listBookingsByUser(String username);
 
     /**
      * Lists bookings by place ID.
@@ -85,9 +49,7 @@ public class BookingService {
      * @param placeId the place ID
      * @return a list of bookings for the specified place
      */
-    public List<Booking> listBookingsByPlace(Long placeId) {
-        return BOOKING_DAO.findByPlaceId(placeId);
-    }
+    List<Booking> listBookingsByPlace(Long placeId);
 
     /**
      * Lists bookings by date.
@@ -95,9 +57,7 @@ public class BookingService {
      * @param date the date
      * @return a list of bookings for the specified date
      */
-    public List<Booking> listBookingsByDate(LocalDate date) {
-        return BOOKING_DAO.findByDate(date);
-    }
+    List<Booking> listBookingsByDate(LocalDate date);
 
     /**
      * Checks if a booking exists by its ID.
@@ -105,8 +65,5 @@ public class BookingService {
      * @param id the booking ID
      * @return true if the booking exists, false otherwise
      */
-    public boolean hasBooking(Long id) {
-        Optional<Booking> maybeBooking = Optional.ofNullable(BOOKING_DAO.findById(id));
-        return maybeBooking.isPresent();
-    }
+    boolean hasBooking(Long id);
 }

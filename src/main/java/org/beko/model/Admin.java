@@ -1,7 +1,8 @@
 package org.beko.model;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents an admin in the system.
@@ -9,10 +10,8 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public final class Admin {
-    Long id;
-    String adminName;
-    String adminPassword;
+    private Long id;
+    private String adminName;
+    private String adminPassword;
 }

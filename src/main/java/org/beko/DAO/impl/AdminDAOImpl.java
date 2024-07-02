@@ -22,7 +22,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public void save(Admin admin) {
-        String sql = "INSERT INTO coworking.\"Admin\" (admin_name, password) VALUES (?, ?)";
+        String sql = "INSERT INTO coworking.\"admin\" (admin_name, password) VALUES (?, ?)";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, admin.getAdminName());
@@ -41,7 +41,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public Admin findById(Long id) {
-        String sql = "SELECT * FROM coworking.\"Admin\" WHERE id = ?";
+        String sql = "SELECT * FROM coworking.\"admin\" WHERE id = ?";
         Admin admin = null;
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -65,7 +65,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public List<Admin> findAll() {
-        String sql = "SELECT * FROM coworking.\"Admin\"";
+        String sql = "SELECT * FROM coworking.\"admin\"";
         List<Admin> admins = new ArrayList<>();
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -89,7 +89,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public void update(Admin admin) {
-        String sql = "UPDATE coworking.\"Admin\" SET admin_name = ?, password = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"admin\" SET admin_name = ?, password = ? WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, admin.getAdminName());
@@ -108,7 +108,7 @@ public class AdminDAOImpl implements AdminDAO {
      */
     @Override
     public void deleteById(Long id) {
-        String sql = "DELETE FROM coworking.\"Admin\" WHERE id = ?";
+        String sql = "DELETE FROM coworking.\"admin\" WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);

@@ -1,7 +1,8 @@
 package org.beko.model;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a place in the system, such as a workspace or conference room.
@@ -9,12 +10,10 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Place {
-    Long id;
-    String name;
-    String type; //workspace or conference-room
+    private Long id;
+    private String name;
+    private String type; //workspace or conference-room
 
     /**
      * Constructs a new Place with the specified name and type.

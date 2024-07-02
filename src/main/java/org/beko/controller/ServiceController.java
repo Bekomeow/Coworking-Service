@@ -3,10 +3,10 @@ package org.beko.controller;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
-import org.beko.service.AdminService;
-import org.beko.service.BookingService;
-import org.beko.service.PlaceService;
-import org.beko.service.UserService;
+import org.beko.service.impl.AdminServiceImpl;
+import org.beko.service.impl.BookingServiceImpl;
+import org.beko.service.impl.PlaceServiceImpl;
+import org.beko.service.impl.UserServiceImpl;
 import org.beko.util.ConnectionManager;
 
 import java.time.LocalDate;
@@ -20,16 +20,16 @@ import java.util.Optional;
  */
 
 public class ServiceController {
-    private final AdminService adminService;
-    private final UserService userService;
-    private final PlaceService placeService;
-    private final BookingService bookingService;
+    private final AdminServiceImpl adminService;
+    private final UserServiceImpl userService;
+    private final PlaceServiceImpl placeService;
+    private final BookingServiceImpl bookingService;
 
     public ServiceController(ConnectionManager connectionManager) {
-        adminService = new AdminService(connectionManager);
-        userService = new UserService(connectionManager);
-        placeService = new PlaceService(connectionManager);
-        bookingService = new BookingService(connectionManager);
+        adminService = new AdminServiceImpl(connectionManager);
+        userService = new UserServiceImpl(connectionManager);
+        placeService = new PlaceServiceImpl(connectionManager);
+        bookingService = new BookingServiceImpl(connectionManager);
     }
 
     /**

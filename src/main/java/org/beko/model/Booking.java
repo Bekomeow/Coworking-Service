@@ -2,8 +2,9 @@ package org.beko.model;
 
 import java.time.LocalDateTime;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a booking in the system.
@@ -11,14 +12,12 @@ import lombok.experimental.FieldDefaults;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Booking {
-    Long id;
-    User user;
-    Place place;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
+    private Long id;
+    private User user;
+    private Place place;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     /**
      * Constructs a new Booking with the specified user, place, start time, and end time.
