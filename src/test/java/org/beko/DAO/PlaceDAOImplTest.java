@@ -32,7 +32,7 @@ public class PlaceDAOImplTest extends PostgresTestContainer {
     }
 
     private void clearPlaceTable(ConnectionManager connectionManager) {
-        String sql = "DELETE FROM coworking.\"Place\"";
+        String sql = "DELETE FROM coworking.\"place\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);

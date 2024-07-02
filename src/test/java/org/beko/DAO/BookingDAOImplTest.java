@@ -46,7 +46,7 @@ public class BookingDAOImplTest extends PostgresTestContainer {
     }
 
     private void clearBookingTable(ConnectionManager connectionManager) {
-        String sql = "DELETE FROM coworking.\"Booking\"";
+        String sql = "DELETE FROM coworking.\"booking\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -56,7 +56,7 @@ public class BookingDAOImplTest extends PostgresTestContainer {
     }
 
     private void clearUserTable(ConnectionManager connectionManager) {
-        String sql = "DELETE FROM coworking.\"User\"";
+        String sql = "DELETE FROM coworking.\"user\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -66,7 +66,7 @@ public class BookingDAOImplTest extends PostgresTestContainer {
     }
 
     private void clearPlaceTable(ConnectionManager connectionManager) {
-        String sql = "DELETE FROM coworking.\"Place\"";
+        String sql = "DELETE FROM coworking.\"place\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);

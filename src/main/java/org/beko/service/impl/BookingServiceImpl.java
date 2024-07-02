@@ -34,7 +34,7 @@ public class BookingServiceImpl implements BookingService {
      */
     public Booking bookPlace(User user, Place place, LocalDateTime startTime, LocalDateTime endTime) {
         if (startTime.isAfter(endTime)) {
-            throw new IllegalArgumentException("Start time must be before  end time.");
+            throw new IllegalArgumentException("Start time must be before end time.");
         }
 
         var bookings = BOOKING_DAO.findAll();

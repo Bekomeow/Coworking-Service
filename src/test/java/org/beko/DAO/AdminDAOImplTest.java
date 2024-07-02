@@ -32,7 +32,7 @@ public class AdminDAOImplTest extends PostgresTestContainer {
     }
 
     private void clearAdminTable(ConnectionManager connectionManager) {
-        String sql = "DELETE FROM coworking.\"Admin\"";
+        String sql = "DELETE FROM coworking.\"admin\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
