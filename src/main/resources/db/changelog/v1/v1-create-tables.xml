@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="v1-create-tables" author="beko">
+        <createTable schemaName="coworking" tableName="admin">
+            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.admin_id_seq')">
+                <constraints primaryKey="true" primaryKeyName="admin_pkey" nullable="false"/>
+            </column>
+            <column name="admin_name" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="coworking" tableName="user">
+            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.user_id_seq')">
+                <constraints primaryKey="true" primaryKeyName="user_pkey" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="coworking" tableName="place">
+            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.place_id_seq')">
+                <constraints primaryKey="true" primaryKeyName="place_pkey" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(300)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="coworking" tableName="booking">
+            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.booking_id_seq')">
+                <constraints primaryKey="true" primaryKeyName="booking_pkey" nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="place_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="booking"
+                baseColumnNames="user_id"
+                constraintName="fk_booking_user"
+                referencedTableName="user"
+                referencedColumnNames="id"
+                baseTableSchemaName="coworking"
+                referencedTableSchemaName="coworking"/>
+
+        <addForeignKeyConstraint
+                baseTableName="booking"
+                baseColumnNames="place_id"
+                constraintName="fk_booking_place"
+                referencedTableName="place"
+                referencedColumnNames="id"
+                baseTableSchemaName="coworking"
+                referencedTableSchemaName="coworking"/>
+    </changeSet>
+</databaseChangeLog>
