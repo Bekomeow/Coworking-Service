@@ -36,9 +36,6 @@ public class AuthenticationServlet extends HttpServlet {
             SecurityRequest request = objectMapper.readValue(req.getInputStream(), SecurityRequest.class);
             TokenResponse token = securityService.authorize(request.username(), request.password());
 
-            System.out.println(request.username());
-            System.out.println(request.password());
-
             resp.setStatus(HttpServletResponse.SC_ACCEPTED);
             objectMapper.writeValue(resp.getWriter(), token);
         } catch (AuthorizeException e) {

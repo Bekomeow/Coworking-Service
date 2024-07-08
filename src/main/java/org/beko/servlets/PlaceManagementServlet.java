@@ -16,6 +16,7 @@ import org.beko.exception.NotValidArgumentException;
 import org.beko.exception.PlaceAlreadyExistException;
 import org.beko.exception.PlaceNotFoundException;
 import org.beko.mapper.PlaceMapper;
+import org.beko.mapper.PlaceMapperImpl;
 import org.beko.model.Place;
 import org.beko.model.types.Role;
 import org.beko.security.Authentication;
@@ -77,9 +78,15 @@ public class PlaceManagementServlet extends HttpServlet {
         try {
             isAdmin(req);
 
+            String placeName = req.getParameter("name");
+            if (placeName == null || placeName.isEmpty())
+                throw new NotValidArgumentException("Workspace name is not specified.");
+
             Place updatedPlace = objectMapper.readValue(req.getReader(), Place.class);
 
-            placeService.updatePlace(updatedPlace.getId(), updatedPlace.getName(), updatedPlace.getType());
+            long placeId = placeService.getPlaceByName(placeName).get().getId();
+
+            placeService.updatePlace(placeId, updatedPlace.getName(), updatedPlace.getType());
 
             resp.setStatus(HttpServletResponse.SC_OK);
         } catch (AccessDeniedException e) {
@@ -100,7 +107,7 @@ public class PlaceManagementServlet extends HttpServlet {
             isAdmin(req);
 
             String id = req.getParameter("id");
-            if (id == null || id.isEmpty()) throw new NotValidArgumentException("Не указано имя рабочего пространства");
+            if (id == null || id.isEmpty()) throw new NotValidArgumentException("Place id not specified.");
 
             placeService.deletePlace(Long.valueOf(id));
 
@@ -120,7 +127,7 @@ public class PlaceManagementServlet extends HttpServlet {
     private void isAdmin(HttpServletRequest req) throws AccessDeniedException {
         Authentication authentication = (Authentication) getServletContext().getAttribute("authentication");
         if (authentication.getRole() != Role.ADMIN) {
-            throw new AccessDeniedException("У вас нет разрешения на доступ к этой странице");
+            throw new AccessDeniedException("You do not have permission to access this page.");
         }
     }
 }

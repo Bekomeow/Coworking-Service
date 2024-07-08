@@ -1,22 +1,27 @@
 package org.beko;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import org.beko.dao.impl.AuditDAOImpl;
 import org.beko.dao.impl.BookingDAOImpl;
 import org.beko.dao.impl.PlaceDAOImpl;
 import org.beko.dao.impl.UserDAOImpl;
 import org.beko.liquibase.LiquibaseDemo;
 import org.beko.mapper.PlaceMapper;
+import org.beko.mapper.PlaceMapperImpl;
 import org.beko.security.JwtTokenUtils;
+import org.beko.service.AuditService;
 import org.beko.service.impl.*;
 import org.beko.util.ConnectionManager;
 import org.mapstruct.factory.Mappers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.Properties;
 
@@ -39,8 +44,13 @@ public class ApplicationContextListener implements ServletContextListener {
         serviceContextInit(servletContext);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        JavaTimeModule module = new JavaTimeModule();
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+        objectMapper.registerModule(module);
+
+        PlaceMapper placeMapper = new PlaceMapperImpl();
         servletContext.setAttribute("objectMapper", objectMapper);
-        servletContext.setAttribute("placeMapper", Mappers.getMapperClass(PlaceMapper.class));
+        servletContext.setAttribute("placeMapper", placeMapper);
     }
 
     @Override
@@ -77,40 +87,15 @@ public class ApplicationContextListener implements ServletContextListener {
     }
 
     private void serviceContextInit(ServletContext servletContext) {
-//        UserDAO userDAO = new UserDAOImpl(connectionManager);
-//        MeterTypeDAO meterTypeDAO = new MeterTypeDAOImpl(connectionManager);
-//        MeterReadingDAO meterReadingDAO = new MeterReadingDAOImpl(connectionManager);
-//        AuditDAOImpl auditDAO = new AuditDAOImpl(connectionManager);
-//
-//        AuditService auditService = new AuditServiceImpl(auditDAO);
-//        UserService userService = new UserServiceImpl(userDAO);
-//
-//        AuditAspect auditAspect = new AuditAspect(auditService);
-//
-//        JwtTokenUtils jwtTokenUtils = new JwtTokenUtils(
-//                properties.getProperty("jwt.secret"),
-//                Duration.parse(properties.getProperty("jwt.lifetime")),
-//                userService
-//        );
-//
-//        SecurityService securityService = new SecurityServiceImpl(userDAO, jwtTokenUtils);
-//        MeterTypeService meterTypeService = new MeterTypeServiceImpl(meterTypeDAO);
-//        MeterReadingService meterReadingService = new MeterReadingServiceImpl(meterReadingDAO, userService, meterTypeService);
-
-//        servletContext.setAttribute("jwtTokenUtils", jwtTokenUtils);
-//        servletContext.setAttribute("auditService", auditService);
-//        servletContext.setAttribute("userService", userService);
-//        servletContext.setAttribute("securityService", securityService);
-//        servletContext.setAttribute("meterTypeService", meterTypeService);
-//        servletContext.setAttribute("meterReadingService", meterReadingService);
-
         BookingDAOImpl bookingDAO = new BookingDAOImpl(connectionManager);
         PlaceDAOImpl placeDAO = new PlaceDAOImpl(connectionManager);
         UserDAOImpl userDAO = new UserDAOImpl(connectionManager);
+        AuditDAOImpl auditDAO = new AuditDAOImpl(connectionManager);
 
         BookingServiceImpl bookingService = new BookingServiceImpl(bookingDAO);
         PlaceServiceImpl placeService = new PlaceServiceImpl(placeDAO);
         UserServiceImpl userService = new UserServiceImpl(userDAO);
+        AuditService auditService = new AuditServiceImpl(auditDAO);
 
         JwtTokenUtils jwtTokenUtils = new JwtTokenUtils(
                 properties.getProperty("jwt.secret"),
@@ -120,9 +105,11 @@ public class ApplicationContextListener implements ServletContextListener {
 
         SecurityServiceImpl securityService = new SecurityServiceImpl(userDAO, jwtTokenUtils);
 
+        servletContext.setAttribute("jwtTokenUtils", jwtTokenUtils);
         servletContext.setAttribute("bookingService", bookingService);
         servletContext.setAttribute("placeService", placeService);
         servletContext.setAttribute("userService", userService);
         servletContext.setAttribute("securityService", securityService);
+        servletContext.setAttribute("auditService", auditService);
     }
 }

@@ -21,7 +21,6 @@ public class JwtTokenUtils {
 
     private final String secret;
     private final Duration jwtLifetime;
-
     private final UserService userService;
 
     /**
@@ -29,6 +28,7 @@ public class JwtTokenUtils {
      *
      * @param secret the secret key for signing JWT
      * @param jwtLifetime the lifetime of the JWT
+     * @param userService the user service for user operations
      */
     public JwtTokenUtils(String secret, Duration jwtLifetime, UserService userService) {
         this.secret = secret;
@@ -68,11 +68,10 @@ public class JwtTokenUtils {
             throw new AccessDeniedException("Access denied: Invalid token");
         }
 
-        String username = extractLogin(token);
+        String login = extractLogin(token);
+        User user = userService.getUserByName(login);
 
-        User user = userService.getUserByName(username);
-
-        return new Authentication(username, user.getRole(), true, "Successful login");
+        return new Authentication(login, user.getRole(), true, "Successful login");
     }
 
     /**

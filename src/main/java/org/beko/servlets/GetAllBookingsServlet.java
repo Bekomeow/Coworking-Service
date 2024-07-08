@@ -52,7 +52,7 @@ public class GetAllBookingsServlet extends HttpServlet {
                 bookings = bookingService.listBookingsByPlace(workspaceName);
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Не указаны параметры запроса"));
+                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Request parameters not specified."));
                 return;
             }
 
@@ -74,7 +74,7 @@ public class GetAllBookingsServlet extends HttpServlet {
         if (username != null) paramCount++;
         if (workspaceName != null) paramCount++;
 
-        if (paramCount > 1) throw new NotValidArgumentException("Можно передавать только один параметр: dateStr, username, name");
+        if (paramCount > 1) throw new NotValidArgumentException("You can only pass one parameter: date, username, name.");
         return paramCount == 1;
     }
 }

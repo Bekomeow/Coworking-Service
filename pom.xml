@@ -16,7 +16,7 @@
         <lombok.version>1.18.30</lombok.version>
         <plugin.war.version>3.3.1</plugin.war.version>
         <plugin.aspectj.version>1.14.0</plugin.aspectj.version>
-        <jackson.version>2.16.1</jackson.version>
+        <jackson.version>2.16.0</jackson.version>
         <jjwt.version>0.12.5</jjwt.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <log4j.version>2.20.0</log4j.version>
@@ -27,6 +27,7 @@
         <liquibase-core.version>4.25.1</liquibase-core.version>
         <testcontainers.version>1.19.4</testcontainers.version>
         <hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
+        <asertj.version>3.25.3</asertj.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,11 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
@@ -138,7 +144,12 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${asertj.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

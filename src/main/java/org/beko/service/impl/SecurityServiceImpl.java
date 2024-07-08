@@ -13,6 +13,7 @@ import org.beko.model.types.ActionType;
 import org.beko.security.JwtTokenUtils;
 import org.beko.service.SecurityService;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 /**
@@ -29,6 +30,7 @@ public class SecurityServiceImpl implements SecurityService {
      *
      * @param login    the user's login
      * @param password the user's password
+     * @return the registered user
      * @throws NotValidArgumentException if login or password is empty, blank, or does not meet length requirements
      * @throws RegisterException         if a user with the same login already exists
      */
@@ -78,6 +80,7 @@ public class SecurityServiceImpl implements SecurityService {
         }
 
         String token = jwtTokenUtils.generateToken(login);
+
         return new TokenResponse(token);
     }
 }

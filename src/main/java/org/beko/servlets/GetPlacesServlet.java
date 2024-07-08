@@ -16,9 +16,8 @@ import org.beko.service.PlaceService;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/workspace")
+@WebServlet("/place")
 public class GetPlacesServlet extends HttpServlet {
-
     private PlaceService placeService;
     private ObjectMapper objectMapper;
 
@@ -46,13 +45,13 @@ public class GetPlacesServlet extends HttpServlet {
                 place = placeService.getPlaceByName(placeName);
             } else {
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Не указано имя или ID рабочего пространства"));
+                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("No place name or ID provided"));
                 return;
             }
 
             if (place.isEmpty()) {
                 resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Рабочее пространство не найдено"));
+                objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Place not found"));
                 return;
             }
 
@@ -60,7 +59,7 @@ public class GetPlacesServlet extends HttpServlet {
             objectMapper.writeValue(resp.getWriter(), place.get());
         } catch (NumberFormatException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Некорректный формат ID рабочего пространства"));
+            objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Incorrect place ID format."));
         } catch (PlaceNotFoundException | NotValidArgumentException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             objectMapper.writeValue(resp.getWriter(), new ExceptionResponse(e.getMessage()));
@@ -75,7 +74,7 @@ public class GetPlacesServlet extends HttpServlet {
         if (placeId != null) paramCount++;
         if (placeName != null) paramCount++;
 
-        if (paramCount > 1) throw new NotValidArgumentException("Можно передавать только один параметр: id или name");
+        if (paramCount > 1) throw new NotValidArgumentException("You can only pass one parameter: id or name.");
         return paramCount == 1;
     }
 }

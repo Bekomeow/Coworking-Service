@@ -20,18 +20,16 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-@WebServlet("/workspaces/available-for-period")
+@WebServlet("/place/available-for-date")
 public class GetAvailablePlacesForDateServlet extends HttpServlet {
 
     private BookingService bookingService;
-    private PlaceService placeService;
     private ObjectMapper objectMapper;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         bookingService = (BookingService) getServletContext().getAttribute("bookingService");
-        placeService = (PlaceService) getServletContext().getAttribute("placeService");
         objectMapper = (ObjectMapper) getServletContext().getAttribute("objectMapper");
     }
 
@@ -40,7 +38,7 @@ public class GetAvailablePlacesForDateServlet extends HttpServlet {
         try {
             String dateStr = req.getParameter("date");
 
-            if(dateStr.isBlank()) throw new NotValidArgumentException("Неверный формат запроса");
+            if(dateStr.isBlank()) throw new NotValidArgumentException("Invalid request format.");
 
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
@@ -55,7 +53,7 @@ public class GetAvailablePlacesForDateServlet extends HttpServlet {
             objectMapper.writeValue(resp.getWriter(), new ExceptionResponse(e.getMessage()));
         } catch (DateTimeParseException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Неверный формат даты и времени"));
+            objectMapper.writeValue(resp.getWriter(), new ExceptionResponse("Incorrect date and time format."));
         } catch (RuntimeException e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }

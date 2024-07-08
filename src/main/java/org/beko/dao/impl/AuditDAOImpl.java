@@ -82,8 +82,8 @@ public class AuditDAOImpl implements AuditDAO {
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, audit.getLogin());
-            statement.setString(1, audit.getAuditType().toString());
-            statement.setString(1, audit.getActionType().toString());
+            statement.setString(2, audit.getAuditType().toString());
+            statement.setString(3, audit.getActionType().toString());
             statement.executeUpdate();
 
             try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -101,7 +101,7 @@ public class AuditDAOImpl implements AuditDAO {
 
     @Override
     public void update(Audit audit) {
-        String sql = "UPDATE audit.\"booking\" SET login = ?, audit_type = ?, action_type = ? WHERE id = ?";
+        String sql = "UPDATE coworking.\"audit\" SET login = ?, audit_type = ?, action_type = ? WHERE id = ?";
         try (Connection connection = connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setObject(1, audit.getLogin());

@@ -20,11 +20,4 @@ public class User {
 
     @Builder.Default
     private Role role = Role.USER;
-
-    /**
-     * Constructs a new User with the specified username and password.
-     *
-     * @param username the username of the user
-     * @param password the password of the user
-     */
 }

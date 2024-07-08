@@ -25,9 +25,9 @@ public class LoggingTimeExecutionAspect {
 
         log.info(
                 "%s.%s :: %d ms".formatted(
-                        methodSignature.getDeclaringType().getSimpleName(), // class name
-                        methodSignature.getName(), // method name
-                        stopWatch.getTime(TimeUnit.MILLISECONDS) // execution time in milliseconds
+                        methodSignature.getDeclaringType().getSimpleName(),
+                        methodSignature.getName(),
+                        stopWatch.getTime(TimeUnit.MILLISECONDS)
                 )
         );
 

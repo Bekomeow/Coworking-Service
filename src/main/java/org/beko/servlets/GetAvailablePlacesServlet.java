@@ -13,7 +13,7 @@ import org.beko.service.BookingService;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/workspaces/available")
+@WebServlet("/place/available")
 public class GetAvailablePlacesServlet extends HttpServlet {
 
     private BookingService bookingService;
