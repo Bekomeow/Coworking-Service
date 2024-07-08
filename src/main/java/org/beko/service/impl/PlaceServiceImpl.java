@@ -1,9 +1,11 @@
 package org.beko.service.impl;
 
-import org.beko.DAO.impl.PlaceDAOImpl;
+import lombok.AllArgsConstructor;
+import org.beko.dao.PlaceDAO;
+import org.beko.dao.impl.PlaceDAOImpl;
+import org.beko.exception.PlaceAlreadyExistException;
 import org.beko.model.Place;
 import org.beko.service.PlaceService;
-import org.beko.util.ConnectionManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,12 +13,9 @@ import java.util.Optional;
 /**
  * Service class for handling place operations.
  */
+@AllArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceDAOImpl PLACE_DAO;
-
-    public PlaceServiceImpl(ConnectionManager connectionManager) {
-        PLACE_DAO = new PlaceDAOImpl(connectionManager);
-    }
 
     /**
      * Adds a new place with the specified name and type.
@@ -26,9 +25,23 @@ public class PlaceServiceImpl implements PlaceService {
      * @return the created Place object
      */
     public Place addPlace(String name, String type) {
-        Place place = new Place(name, type);
+        Optional<Place> maybePlace = Optional.ofNullable(PLACE_DAO.findByPlaceName(name));
+
+        if(maybePlace.isPresent()) {
+            throw new PlaceAlreadyExistException("A place with that name already exists");
+        }
+
+        Place place = Place.builder()
+                .name(name)
+                .type(type)
+                .build();
+
         PLACE_DAO.save(place);
         return place;
+    }
+
+    public Optional<Place> getPlaceByName(String name) {
+        return Optional.ofNullable(PLACE_DAO.findByPlaceName(name));
     }
 
     /**

@@ -1,11 +1,11 @@
 package org.beko.service.impl;
 
-import org.beko.DAO.impl.BookingDAOImpl;
+import lombok.AllArgsConstructor;
+import org.beko.dao.impl.BookingDAOImpl;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
 import org.beko.service.BookingService;
-import org.beko.util.ConnectionManager;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,12 +15,9 @@ import java.util.Optional;
 /**
  * Service class for handling booking operations.
  */
+@AllArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingDAOImpl BOOKING_DAO;
-
-    public BookingServiceImpl(ConnectionManager connectionManager) {
-        BOOKING_DAO = new BookingDAOImpl(connectionManager);
-    }
 
     /**
      * Books a place for a user for the specified time period.
@@ -47,7 +44,13 @@ public class BookingServiceImpl implements BookingService {
             }
         }
 
-        Booking booking = new Booking(user, place, startTime, endTime);
+        Booking booking = Booking.builder()
+                .user(user)
+                .place(place)
+                .startTime(startTime)
+                .endTime(endTime)
+                .build();
+
         BOOKING_DAO.save(booking);
         return booking;
     }
@@ -83,11 +86,11 @@ public class BookingServiceImpl implements BookingService {
     /**
      * Lists bookings by place ID.
      *
-     * @param placeId the place ID
+     * @param placeName the place name
      * @return a list of bookings for the specified place
      */
-    public List<Booking> listBookingsByPlace(Long placeId) {
-        return BOOKING_DAO.findByPlaceId(placeId);
+    public List<Booking> listBookingsByPlace(String placeName) {
+        return BOOKING_DAO.findByPlaceName(placeName);
     }
 
     /**
@@ -109,5 +112,15 @@ public class BookingServiceImpl implements BookingService {
     public boolean hasBooking(Long id) {
         Optional<Booking> maybeBooking = Optional.ofNullable(BOOKING_DAO.findById(id));
         return maybeBooking.isPresent();
+    }
+
+    @Override
+    public List<Place> getAvailablePlacesForDate(LocalDate date) {
+        return BOOKING_DAO.findAllAvailablePlacesForDate(date);
+    }
+
+    @Override
+    public List<Place> getAvailablePlacesAtNow() {
+        return BOOKING_DAO.findAllAvailablePlaces();
     }
 }

@@ -16,6 +16,14 @@ public interface PlaceService {
     Place addPlace(String name, String type);
 
     /**
+     * gets a place with the specified name.
+     *
+     * @param name the name of the place
+     * @return the Place object
+     */
+    Optional<Place> getPlaceByName(String name);
+
+    /**
      * Updates a place with the specified ID, name, and type.
      *
      * @param id   the place ID
