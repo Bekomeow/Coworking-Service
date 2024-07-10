@@ -5,18 +5,6 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <changeSet id="v1-create-tables" author="beko">
-        <createTable schemaName="coworking" tableName="admin">
-            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.admin_id_seq')">
-                <constraints primaryKey="true" primaryKeyName="admin_pkey" nullable="false"/>
-            </column>
-            <column name="admin_name" type="varchar(200)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="varchar(200)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
         <createTable schemaName="coworking" tableName="user">
             <column name="id" type="bigint" defaultValueComputed="nextval('coworking.user_id_seq')">
                 <constraints primaryKey="true" primaryKeyName="user_pkey" nullable="false"/>
@@ -25,6 +13,24 @@
                 <constraints nullable="false"/>
             </column>
             <column name="password" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable schemaName="coworking" tableName="audit">
+            <column name="id" type="bigint" defaultValueComputed="nextval('coworking.audit_id_seq')">
+                <constraints primaryKey="true" primaryKeyName="audit_pkey" nullable="false"/>
+            </column>
+            <column name="login" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="audit_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="action_type" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

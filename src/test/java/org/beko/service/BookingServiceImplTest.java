@@ -1,16 +1,19 @@
 package org.beko.service;
 
-import org.beko.DAO.impl.BookingDAOImpl;
-import org.beko.DAO.impl.PlaceDAOImpl;
+import org.beko.dao.impl.BookingDAOImpl;
 import org.beko.containers.PostgresTestContainer;
+import org.beko.dao.impl.PlaceDAOImpl;
+import org.beko.dao.impl.UserDAOImpl;
 import org.beko.liquibase.LiquibaseDemo;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
+import org.beko.security.JwtTokenUtils;
 import org.beko.service.impl.BookingServiceImpl;
 import org.beko.service.impl.PlaceServiceImpl;
-import org.beko.service.impl.UserServiceImpl;
+import org.beko.service.impl.SecurityServiceImpl;
 import org.beko.util.ConnectionManager;
+import org.beko.util.PropertiesUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +25,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 class BookingServiceImplTest extends PostgresTestContainer {
     private BookingServiceImpl bookingService;
-    private UserServiceImpl userService;
+    private SecurityServiceImpl securityService;
     private PlaceServiceImpl placeService;
     private BookingDAOImpl bookingDAO;
     private ConnectionManager connectionManager;
@@ -37,21 +41,31 @@ class BookingServiceImplTest extends PostgresTestContainer {
                 container.getUsername(),
                 container.getPassword()
         );
-        LiquibaseDemo liquibaseTest = LiquibaseDemo.getInstance();
-        liquibaseTest.runMigrations(connectionManager.getConnection());
+
+        String changeLogFile = PropertiesUtil.get("liquibase.change-log");
+        String schemaName = PropertiesUtil.get("liquibase.liquibase-schema");
+
+        LiquibaseDemo liquibaseDemo = new LiquibaseDemo(connectionManager.getConnection(), changeLogFile, schemaName);
+        liquibaseDemo.runMigrations();
 
         bookingDAO = new BookingDAOImpl(connectionManager);
-        bookingService = new BookingServiceImpl(connectionManager);
-        userService = new UserServiceImpl(connectionManager);
-        placeService = new PlaceServiceImpl(connectionManager);
+        PlaceDAOImpl placeDAO = new PlaceDAOImpl(connectionManager);
+        UserDAOImpl userDAO = new UserDAOImpl(connectionManager);
+
+        JwtTokenUtils jwtTokenUtils = mock(JwtTokenUtils.class);
+
+        bookingService = new BookingServiceImpl(bookingDAO);
+        securityService = new SecurityServiceImpl(userDAO, jwtTokenUtils);
+        placeService = new PlaceServiceImpl(placeDAO);
+
         clearBookingTable();
         resetSequence();
     }
 
     private void clearBookingTable() {
         String sql = "DELETE FROM coworking.\"booking\";" +
-                     "DELETE FROM coworking.\"user\";" +
-                     "DELETE FROM coworking.\"place\"";
+                "DELETE FROM coworking.\"user\";" +
+                "DELETE FROM coworking.\"place\"";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -62,8 +76,8 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     public void resetSequence() {
         String sql = "ALTER SEQUENCE coworking.\"booking_id_seq\" RESTART WITH 1;" +
-                     "ALTER SEQUENCE coworking.\"user_id_seq\" RESTART WITH 1;" +
-                     "ALTER SEQUENCE coworking.\"place_id_seq\" RESTART WITH 1";
+                "ALTER SEQUENCE coworking.\"user_id_seq\" RESTART WITH 1;" +
+                "ALTER SEQUENCE coworking.\"place_id_seq\" RESTART WITH 1";
         try (var connection = connectionManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
@@ -74,10 +88,18 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testBookPlace() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
@@ -94,10 +116,18 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testBookPlaceWithInvalidTime() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
@@ -110,10 +140,18 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testCancelBooking() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
@@ -128,10 +166,18 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testListBookings() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime1 = LocalDateTime.now().plusDays(1);
@@ -149,12 +195,24 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testListBookingsByUser() {
-        User user1 = new User(1L, "user1", "User One");
-        User user2 = new User(2L, "user2", "User Two");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user1 = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        User user2 = User.builder()
+                .id(2L)
+                .username("user2")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user1.getUsername(), user1.getPassword());
-        userService.register(user2.getUsername(), user2.getPassword());
+        securityService.register(user1.getUsername(), user1.getPassword());
+        securityService.register(user2.getUsername(), user2.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
@@ -174,11 +232,23 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testListBookingsByPlace() {
-        User user = new User(1L, "user1", "User One");
-        Place place1 = new Place(1L, "Conference Room", "conference");
-        Place place2 = new Place(2L, "Meeting Room", "meeting");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place1 = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
+        Place place2 = Place.builder()
+                .id(2L)
+                .name("Meeting Room")
+                .type("meeting")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place1.getName(), place1.getType());
         placeService.addPlace(place2.getName(), place2.getType());
 
@@ -188,21 +258,29 @@ class BookingServiceImplTest extends PostgresTestContainer {
         bookingService.bookPlace(user, place1, startTime, endTime);
         bookingService.bookPlace(user, place2, startTime.plusDays(1), endTime.plusDays(1));
 
-        List<Booking> place1Bookings = bookingService.listBookingsByPlace(1L);
+        List<Booking> place1Bookings = bookingService.listBookingsByPlace(place1.getName());
         assertThat(place1Bookings).hasSize(1);
         assertThat(place1Bookings.get(0).getPlace().getName()).isEqualTo("Conference Room");
 
-        List<Booking> place2Bookings = bookingService.listBookingsByPlace(2L);
+        List<Booking> place2Bookings = bookingService.listBookingsByPlace(place2.getName());
         assertThat(place2Bookings).hasSize(1);
         assertThat(place2Bookings.get(0).getPlace().getName()).isEqualTo("Meeting Room");
     }
 
     @Test
     void testListBookingsByDate() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);
@@ -216,10 +294,18 @@ class BookingServiceImplTest extends PostgresTestContainer {
 
     @Test
     void testHasBooking() {
-        User user = new User(1L, "user1", "User One");
-        Place place = new Place(1L, "Conference Room", "conference");
+        User user = User.builder()
+                .id(1L)
+                .username("user1")
+                .password("password")
+                .build();
+        Place place = Place.builder()
+                .id(1L)
+                .name("Conference Room")
+                .type("conference")
+                .build();
 
-        userService.register(user.getUsername(), user.getPassword());
+        securityService.register(user.getUsername(), user.getPassword());
         placeService.addPlace(place.getName(), place.getType());
 
         LocalDateTime startTime = LocalDateTime.now().plusDays(1);

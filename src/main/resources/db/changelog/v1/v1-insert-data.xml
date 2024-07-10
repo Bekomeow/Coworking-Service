@@ -5,10 +5,11 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
     <changeSet id="v1-insert-data" author="beko">
-        <insert schemaName="coworking" tableName="admin">
+        <insert schemaName="coworking" tableName="user">
             <column name="id" value="1"/>
-            <column name="admin_name" value="admin"/>
+            <column name="username" value="admin"/>
             <column name="password" value="admin"/>
+            <column name="role" value="ADMIN"/>
         </insert>
 
         <insert schemaName="coworking" tableName="place">

@@ -46,10 +46,10 @@ public interface BookingService {
     /**
      * Lists bookings by place ID.
      *
-     * @param placeId the place ID
+     * @param placeName the place name
      * @return a list of bookings for the specified place
      */
-    List<Booking> listBookingsByPlace(Long placeId);
+    List<Booking> listBookingsByPlace(String placeName);
 
     /**
      * Lists bookings by date.
@@ -66,4 +66,8 @@ public interface BookingService {
      * @return true if the booking exists, false otherwise
      */
     boolean hasBooking(Long id);
+
+    List<Place> getAvailablePlacesForDate(LocalDate date);
+
+    List<Place> getAvailablePlacesAtNow();
 }

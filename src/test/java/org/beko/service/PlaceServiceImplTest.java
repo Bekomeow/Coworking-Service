@@ -1,11 +1,12 @@
 package org.beko.service;
 
-import org.beko.DAO.impl.PlaceDAOImpl;
+import org.beko.dao.impl.PlaceDAOImpl;
 import org.beko.containers.PostgresTestContainer;
 import org.beko.liquibase.LiquibaseDemo;
 import org.beko.model.Place;
 import org.beko.service.impl.PlaceServiceImpl;
 import org.beko.util.ConnectionManager;
+import org.beko.util.PropertiesUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
@@ -25,11 +26,14 @@ class PlaceServiceImplTest extends PostgresTestContainer {
                 container.getUsername(),
                 container.getPassword()
         );
-        LiquibaseDemo liquibaseTest = LiquibaseDemo.getInstance();
-        liquibaseTest.runMigrations(connectionManager.getConnection());
+        String changeLogFile = PropertiesUtil.get("liquibase.change-log");
+        String schemaName = PropertiesUtil.get("liquibase.liquibase-schema");
+
+        LiquibaseDemo liquibaseDemo = new LiquibaseDemo(connectionManager.getConnection(), changeLogFile, schemaName);
+        liquibaseDemo.runMigrations();
 
         placeDAO = new PlaceDAOImpl(connectionManager);
-        placeService = new PlaceServiceImpl(connectionManager);
+        placeService = new PlaceServiceImpl(placeDAO);
         clearPlaceTable();
         resetSequence();
     }
