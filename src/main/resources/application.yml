@@ -1,0 +1,13 @@
+datasource:
+  driver-class-name: org.postgresql.Driver
+  username: beko
+  password: beko
+  url: jdbc:postgresql://localhost:5433/coworking_service_db
+  pool-size: 5
+liquibase:
+  enabled: true
+  change-log: db/changelog/main-changelog.xml
+  liquibase-schema: migration
+jwt:
+  secret: sdsfsertacsdsdfsdf1mjkc1ascdfsdfkds9sdnfasb8sdfsd
+  lifetime: PT30M

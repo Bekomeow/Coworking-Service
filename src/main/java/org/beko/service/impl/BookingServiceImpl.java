@@ -6,6 +6,7 @@ import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
 import org.beko.service.BookingService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Optional;
 /**
  * Service class for handling booking operations.
  */
+@Service
 @AllArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingDAOImpl BOOKING_DAO;

@@ -5,24 +5,34 @@ import org.beko.annotations.Auditable;
 import org.beko.annotations.Loggable;
 import org.beko.dao.UserDAO;
 import org.beko.dto.TokenResponse;
-import org.beko.exception.AuthorizeException;
+import org.beko.exception.InvalidCredentialsException;
 import org.beko.exception.NotValidArgumentException;
 import org.beko.exception.RegisterException;
 import org.beko.model.User;
 import org.beko.model.types.ActionType;
+import org.beko.model.types.Role;
 import org.beko.security.JwtTokenUtils;
 import org.beko.service.SecurityService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 /**
  * Implementation of the {@link SecurityService} interface.
  */
+@Service
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
 
     private final UserDAO userDao;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomUserDetailsService userDetailsService;
+    private final AuthenticationManager authenticationManager;
     private final JwtTokenUtils jwtTokenUtils;
 
     /**
@@ -53,7 +63,8 @@ public class SecurityServiceImpl implements SecurityService {
 
         User newUser = User.builder()
                 .username(login)
-                .password(password)
+                .role(Role.USER)
+                .password(passwordEncoder.encode(password))
                 .build();
 
         return userDao.save(newUser);
@@ -65,21 +76,21 @@ public class SecurityServiceImpl implements SecurityService {
      * @param login    the user's login
      * @param password the user's password
      * @return an optional containing the authorized user, or empty if authorization fails
-     * @throws AuthorizeException if the user is not found or the password is incorrect
+     * @throws InvalidCredentialsException if the user is not found or the password is incorrect
      */
     @Override
     @Auditable(actionType = ActionType.AUTHORIZATION, login = "@login")
     public TokenResponse authorize(String login, String password) {
-        Optional<User> optionalUser = Optional.ofNullable(userDao.findByUsername(login));
-        if (optionalUser.isEmpty()) {
-            throw new AuthorizeException("Пользователь с данным логином отсутствует в базе данных.");
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login, password)
+            );
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Invalid username or password");
         }
 
-        if (!optionalUser.get().getPassword().equals(password)) {
-            throw new AuthorizeException("Неверный пароль.");
-        }
-
-        String token = jwtTokenUtils.generateToken(login);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(login);
+        String token = jwtTokenUtils.generateToken(userDetails);
 
         return new TokenResponse(token);
     }

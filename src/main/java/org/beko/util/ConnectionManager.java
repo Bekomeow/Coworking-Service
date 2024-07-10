@@ -1,5 +1,8 @@
 package org.beko.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Proxy;
@@ -12,21 +15,27 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Manages database connections using a connection pool.
  */
+@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class ConnectionManager {
-    private static final String PASSWORD_KEY = "db.password";
-    private static final String USERNAME_KEY = "db.username";
-    private static final String URl_KEY = "db.url";
-    private static final String POOL_SIZE_KEY = "db.pool.size";
-    private static final int DEFAULT_POOL_SIZE = 5;
+    @Value("${datasource.url}")
+    private String url;
+    @Value("${datasource.driver-class-name}")
+    private String driver;
+    @Value("${datasource.username}")
+    private String username;
+    @Value("${datasource.password}")
+    private String password;
+    @Value("${datasource.pool-size}")
+    private int poolSize;
     private BlockingQueue<Connection> pool;
     private List<Connection> sourceConnection;
 
     public ConnectionManager() {
         loadDriver();
         initConnectionPool(
-                PropertiesUtil.get(URl_KEY),
-                PropertiesUtil.get(USERNAME_KEY),
-                PropertiesUtil.get(PASSWORD_KEY));
+                url,
+                username,
+                password);
     }
 
     public ConnectionManager(String url, String username, String password) {
@@ -38,12 +47,12 @@ public class ConnectionManager {
      * Initializes the connection pool.
      */
     private void initConnectionPool(String url, String username, String password) {
-        var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
-        var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
-        pool = new ArrayBlockingQueue<>(size);
-        sourceConnection = new ArrayList<>(size);
+        System.out.println("poolSize " + poolSize);
 
-        for (int i = 0; i < size; i++) {
+        pool = new ArrayBlockingQueue<>(poolSize);
+        sourceConnection = new ArrayList<>(poolSize);
+
+        for (int i = 0; i < poolSize; i++) {
             var connection = open(url, username, password);
             var proxyConnection = (Connection) Proxy.newProxyInstance(ConnectionManager.class.getClassLoader(), new Class[]{Connection.class},
                     (proxy, method, objects) -> method.getName().equals("close")

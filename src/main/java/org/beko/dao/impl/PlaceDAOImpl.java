@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.beko.dao.PlaceDAO;
 import org.beko.model.Place;
 import org.beko.util.ConnectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.List;
 /**
  * Implementation of the PlaceDAO interface for managing Place entities in the database.
  */
+@Repository
 @RequiredArgsConstructor
 public class PlaceDAOImpl implements PlaceDAO {
     private final ConnectionManager connectionManager;

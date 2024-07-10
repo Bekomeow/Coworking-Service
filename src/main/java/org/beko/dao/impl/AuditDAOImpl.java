@@ -7,6 +7,8 @@ import org.beko.model.Audit;
 import org.beko.model.types.ActionType;
 import org.beko.model.types.AuditType;
 import org.beko.util.ConnectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
  * Provides methods for CRUD operations on Audit entities.
  */
 @Slf4j
+@Repository
 @RequiredArgsConstructor
 public class AuditDAOImpl implements AuditDAO {
     private final ConnectionManager connectionManager;

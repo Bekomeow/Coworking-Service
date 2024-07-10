@@ -6,6 +6,7 @@ import org.beko.dao.impl.PlaceDAOImpl;
 import org.beko.exception.PlaceAlreadyExistException;
 import org.beko.model.Place;
 import org.beko.service.PlaceService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 /**
  * Service class for handling place operations.
  */
+@Service
 @AllArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceDAOImpl PLACE_DAO;

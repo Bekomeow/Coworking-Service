@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import org.beko.dao.impl.UserDAOImpl;
 import org.beko.model.User;
 import org.beko.service.UserService;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 /**
  * Service class for handling user operations.
  */
+@Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserDAOImpl USER_DAO;

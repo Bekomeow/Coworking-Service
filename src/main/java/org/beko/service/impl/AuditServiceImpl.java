@@ -6,12 +6,14 @@ import org.beko.model.Audit;
 import org.beko.model.types.ActionType;
 import org.beko.model.types.AuditType;
 import org.beko.service.AuditService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * Implementation of the {@link AuditService} interface.
  */
+@Service
 @RequiredArgsConstructor
 public class AuditServiceImpl implements AuditService {
 

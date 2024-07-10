@@ -24,8 +24,6 @@ public class LoggableAspect {
 
         log.info("Calling method " + methodSignature.toShortString());
 
-        System.out.println("TEST  Calling method " + methodSignature.toShortString());
-
         long startTime = System.currentTimeMillis();
         Object result = proceedingJoinPoint.proceed();
         long endTime = System.currentTimeMillis();
