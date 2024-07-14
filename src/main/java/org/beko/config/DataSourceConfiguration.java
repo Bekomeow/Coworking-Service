@@ -14,25 +14,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * The {@code DataSourceConfiguration} class is responsible for configuring the data source used by the application.
- *
- * <p>It defines a data source bean that provides the necessary configuration for connecting to the database. Additionally, it can be
- * extended to configure database migration tools like SpringLiquibase.
- *
- * <p>Example usage:
- * <pre>
- * // Create an instance of JdbcTemplate in your Spring application.
- * &#64;Autowired
- * private JdbcTemplate jdbcTemplate;
- * </pre>
- * <p>
- * The class is annotated with `@Configuration` to indicate that it provides bean definitions.
- * It is also annotated with `@PropertySource` to specify the location of the property source (application.yml).
+ * Configuration class for setting up data source and Liquibase integration using Spring.
  */
 @Configuration
 @PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
 public class DataSourceConfiguration {
-
     @Value("${datasource.url}")
     private String url;
     @Value("${datasource.driver-class-name}")
@@ -45,11 +31,12 @@ public class DataSourceConfiguration {
     private String changeLogFile;
     @Value("${liquibase.liquibase-schema}")
     private String schemaName;
+    @Value("${db.url}")
 
     /**
-     * Creates a {@link JdbcTemplate} bean configured with the data source properties.
+     * Configures and provides a JdbcTemplate bean initialized with the configured data source.
      *
-     * @return A JdbcTemplate configured with the specified data source.
+     * @return configured JdbcTemplate bean
      */
     @Bean
     public JdbcTemplate jdbcTemplate() {
@@ -61,7 +48,7 @@ public class DataSourceConfiguration {
 
         try (Connection connection = dataSource.getConnection()) {
             Statement statement = connection.createStatement();
-            statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName.split("[^\\p{L}]")[0]);
+            statement.execute("CREATE SCHEMA IF NOT EXISTS " + schemaName);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -69,6 +56,11 @@ public class DataSourceConfiguration {
         return new JdbcTemplate(dataSource);
     }
 
+    /**
+     * Configures and provides a SpringLiquibase bean initialized with the configured Liquibase settings.
+     *
+     * @return configured SpringLiquibase bean
+     */
     @Bean
     public SpringLiquibase liquibase() {
         SpringLiquibase liquibase = new SpringLiquibase();

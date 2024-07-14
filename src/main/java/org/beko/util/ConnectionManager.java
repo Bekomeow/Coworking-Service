@@ -1,7 +1,7 @@
 package org.beko.util;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +15,18 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Manages database connections using a connection pool.
  */
-@PropertySource(value = "classpath:application.yml", factory = YamlPropertySourceFactory.class)
+@Component
 public class ConnectionManager {
-    @Value("${datasource.url}")
-    private String url;
-    @Value("${datasource.driver-class-name}")
-    private String driver;
-    @Value("${datasource.username}")
-    private String username;
-    @Value("${datasource.password}")
-    private String password;
-    @Value("${datasource.pool-size}")
-    private int poolSize;
+//    @Value("${datasource.url}")
+    private String url = "jdbc:postgresql://localhost:5433/coworking_service_db";
+//    @Value("${datasource.driver-class-name}")
+    private String driver = "org.postgresql.Driver";
+//    @Value("${datasource.username}")
+    private String username = "beko";
+//    @Value("${datasource.password}")
+    private String password = "beko";
+//    @Value("${datasource.pool-size}")
+    private int poolSize = 5;
     private BlockingQueue<Connection> pool;
     private List<Connection> sourceConnection;
 

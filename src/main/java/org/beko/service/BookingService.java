@@ -3,11 +3,13 @@ package org.beko.service;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.model.User;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public interface BookingService {
     /**
      * Books a place for a user for the specified time period.

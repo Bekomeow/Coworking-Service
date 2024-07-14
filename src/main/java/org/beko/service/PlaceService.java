@@ -1,10 +1,12 @@
 package org.beko.service;
 
 import org.beko.model.Place;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public interface PlaceService {
     /**
      * Adds a new place with the specified name and type.

@@ -1,67 +1,104 @@
 package org.beko.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.RequiredArgsConstructor;
+import org.beko.dto.UserDTO;
+import org.beko.exception.UserNotFoundException;
+import org.beko.model.User;
+import org.beko.service.UserService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
+import java.nio.file.AccessDeniedException;
 import java.time.Duration;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+/**
+ * Utility class for handling JWT token operations.
+ */
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtils {
-
     @Value("${jwt.secret}")
     private String secret;
 
     @Value("${jwt.lifetime}")
-    private Duration jwtLifetime;
+    private String jwtLifetime;
+    private final UserService userService;
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        List<String> rolesList = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
-        claims.put("roles", rolesList);
+    /**
+     * Generates a JWT for the given login.
+     *
+     * @param username the login for which to generate the JWT
+     * @return the generated JWT
+     */
+    public String generateToken(String username){
+        Date expirationDate = new Date(new Date().getTime() + Duration.parse(jwtLifetime).toMillis());
 
-        Date issuedDate = new Date();
-        Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
-
-        return Jwts.builder()
-                .claims(claims)
-                .subject(userDetails.getUsername())
-                .issuedAt(issuedDate)
-                .expiration(expiredDate)
-                .signWith(signKey())
-                .compact();
+        return JWT.create()
+                .withSubject("user details")
+                .withClaim("username", username)
+                .withIssuedAt(new Date())
+                .withIssuer("ruslan")
+                .withExpiresAt(expirationDate)
+                .sign(Algorithm.HMAC256(secret));
     }
 
-    public String extractUsername(String token) {
-        return extractAllClaims(token).getSubject();
+    /**
+     * Authenticates a user based on the given JWT.
+     *
+     * @param token the JWT to authenticate
+     * @return the authentication result
+     * @throws AccessDeniedException if the JWT is invalid or the user does not exist
+     */
+    public Authentication authentication(String token) throws AccessDeniedException, UserNotFoundException {
+        if (!validateToken(token)) {
+            throw new AccessDeniedException("Access denied: Invalid token");
+        }
+
+        String username = getUsernameClaim(token);
+        User user = userService.getUserByName(username);
+
+        return new Authentication(username, user.getRole());
     }
 
-    public List<String> extractRoles(String token) {
-        return extractAllClaims(token).get("roles", List.class);
+    /**
+     * Retrieves the username claim from the provided JWT token.
+     *
+     * @param token the JWT token from which to retrieve the username claim
+     * @return the username claim extracted from the JWT token
+     * @throws JWTVerificationException if the token verification fails
+     */
+    private String getUsernameClaim(String token) throws JWTVerificationException {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                .withIssuer("ruslan")
+                .build();
+
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("username").asString();
     }
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(signKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
+    /**
+     * Validates the given JWT token.
+     *
+     * @param token the JWT token to validate
+     * @return true if the token is valid, false otherwise
+     */
+    public boolean validateToken(String token) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                    .withIssuer("ruslan")
+                    .build();
 
-    private SecretKey signKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+            verifier.verify(token);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
     }
 }

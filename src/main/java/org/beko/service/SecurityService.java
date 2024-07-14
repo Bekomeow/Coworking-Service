@@ -1,17 +1,19 @@
 package org.beko.service;
 
+import org.beko.dto.AuthRequest;
 import org.beko.dto.TokenResponse;
 import org.beko.model.User;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface SecurityService {
 
     /**
      * Registers a new user.
      *
-     * @param login    the login of the user
-     * @param password the password of the user
+     * @param request the request for register
      */
-    User register(String login, String password);
+    User register(AuthRequest request);
     /**
      * Authorizes a user with the provided login and password.
      *

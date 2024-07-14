@@ -1,17 +1,18 @@
 package org.beko.exception;
 
-import org.springframework.security.authentication.BadCredentialsException;
 
 /**
- * Exception thrown when the provided credentials are invalid.
- * This exception extends {@link BadCredentialsException}, indicating authentication failure due to bad credentials.
+ * Exception class representing a credentials-related error.
+ * Thrown when there is an issue during user authentication.
  */
-public class InvalidCredentialsException extends BadCredentialsException {
+public class InvalidCredentialsException extends RuntimeException {
+
     /**
-     * Constructs an {@code InvalidCredentialsException} with the specified detail message.
-     * @param msg the detail message.
+     * Constructs a new InvalidCredentialsException with the specified detail message.
+     *
+     * @param message the detail message (which is saved for later retrieval by the getMessage() method).
      */
-    public InvalidCredentialsException(String msg) {
-        super(msg);
+    public InvalidCredentialsException(String message) {
+        super(message);
     }
 }

@@ -3,46 +3,36 @@ package org.beko.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.beko.dto.SecurityRequest;
+import org.beko.annotations.Loggable;
+import org.beko.dto.AuthRequest;
 import org.beko.dto.TokenResponse;
-import org.beko.model.User;
+import org.beko.dto.UserDTO;
+import org.beko.mapper.UserMapper;
 import org.beko.service.SecurityService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * Controller class for handling authentication operations.
+ * Controller class for handling authentication and authorization operations.
  */
-@RestController
 @Api(value = "Security Controller")
+@RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class SecurityController {
-
     private final SecurityService securityService;
+    private final UserMapper userMapper;
 
-    /**
-     * Registers a new user.
-     * @param request The SecurityRequest object containing user registration information.
-     * @return ResponseEntity containing the registered User object.
-     */
-    @PostMapping("/sign-up")
-    @ApiOperation(value = "Register a new user", response = User.class)
-    public ResponseEntity<User> register(@RequestBody SecurityRequest request) {
-        return ResponseEntity.ok(securityService.register(request.username(), request.password()));
+    @ApiOperation(value = "Register a new user", response = UserDTO.class)
+    @PostMapping("/registration")
+    public ResponseEntity<UserDTO> register(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(userMapper.toDTO(securityService.register(request)));
     }
 
-    /**
-     * Authorizes a user.
-     * @param request The SecurityRequest object containing user authorization information.
-     * @return ResponseEntity containing the authorization token.
-     */
-    @PostMapping("/sign-in")
-    @ApiOperation(value = "Authorize a user", response = TokenResponse.class)
-    public ResponseEntity<TokenResponse> authorize(@RequestBody SecurityRequest request) {
+    @Loggable
+    @ApiOperation(value = "Authenticate user", response = TokenResponse.class)
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> authenticate(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(securityService.authorize(request.username(), request.password()));
     }
 }

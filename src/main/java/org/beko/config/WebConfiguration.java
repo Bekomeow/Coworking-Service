@@ -9,26 +9,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.List;
 
 /**
- * The {@code WebConfig} class is a configuration class for customizing web-related configurations in a Spring application.
- *
- * <p>This class is annotated with `@Configuration`, indicating that it provides bean definitions for custom configurations.
- *
- * <p>It implements the `WebMvcConfigurer` interface, allowing for custom configuration of web-based features in a Spring application.
- *
- * <p>In this specific configuration, the class customizes message converters used for JSON serialization to enable pretty-printing (indenting) of JSON responses.
- *
- * <p>Example usage:
- * <pre>
- * // This class is typically used to configure custom web-related settings in your Spring application.
- * public class MyWebInitializer {
- *     public static void main(String[] args) {
- *         SpringApplication.run(WebConfig.class, args);
- *     }
- * }
- * </pre>
+ * Configuration class for customizing HTTP message converters in a Spring MVC application.
  */
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
+
+    /**
+     * Configure custom HTTP message converters, adding a Jackson JSON converter with indentation.
+     *
+     * @param converters the list of HTTP message converters to customize
+     */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder()

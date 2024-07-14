@@ -5,7 +5,6 @@ import org.beko.dao.UserDAO;
 import org.beko.model.User;
 import org.beko.model.types.Role;
 import org.beko.util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
