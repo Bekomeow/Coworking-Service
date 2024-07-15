@@ -2,43 +2,46 @@ package org.beko.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.beko.annotations.Auditable;
-import org.beko.annotations.Loggable;
 import org.beko.dao.UserDAO;
+import org.beko.dto.AuthRequest;
 import org.beko.dto.TokenResponse;
-import org.beko.exception.AuthorizeException;
+import org.beko.exception.InvalidCredentialsException;
 import org.beko.exception.NotValidArgumentException;
 import org.beko.exception.RegisterException;
 import org.beko.model.User;
 import org.beko.model.types.ActionType;
 import org.beko.security.JwtTokenUtils;
 import org.beko.service.SecurityService;
+import org.beko.util.PasswordUtil;
+import org.beko.util.ValidationUtil;
+import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 /**
- * Implementation of the {@link SecurityService} interface.
+ * Service for security of app.
  */
+@Service
 @RequiredArgsConstructor
 public class SecurityServiceImpl implements SecurityService {
-
     private final UserDAO userDao;
-    private final JwtTokenUtils jwtTokenUtils;
+    private final JwtTokenUtils jwtTokenUtil;
 
     /**
      * Registers a new user with the provided login and password.
      *
-     * @param login    the user's login
-     * @param password the user's password
-     * @return the registered user
+     * @param request the auth request
+     * @return the registered user DTO
      * @throws NotValidArgumentException if login or password is empty, blank, or does not meet length requirements
-     * @throws RegisterException         if a user with the same login already exists
+     * @throws RegisterException if a user with the same login already exists
      */
-    @Override
-    @Loggable
-    @Auditable(actionType = ActionType.REGISTRATION, login = "@login")
-    public User register(String login, String password) {
-        if (login == null || password == null || login.isEmpty() || password.isEmpty() || login.isBlank() || password.isBlank()) {
+    @Auditable(actionType = ActionType.REGISTRATION)
+    public User register(AuthRequest request) {
+        ValidationUtil.validate(request);
+
+        String username = request.username();
+        String password = request.password();
+        if (username == null || password == null || username.isEmpty() || password.isEmpty() || username.isBlank() || password.isBlank()) {
             throw new NotValidArgumentException("Пароль или логин не могут быть пустыми или состоять только из пробелов.");
         }
 
@@ -46,13 +49,13 @@ public class SecurityServiceImpl implements SecurityService {
             throw new NotValidArgumentException("Длина пароля должна составлять от 5 до 30 символов.");
         }
 
-        Optional<User> optionalUser = Optional.ofNullable(userDao.findByUsername(login));
+        Optional<User> optionalUser = Optional.ofNullable(userDao.findByUsername(username));
         if (optionalUser.isPresent()) {
-            throw new RegisterException("Пользователь с таким логином уже существует.");
+            throw new RegisterException("A user with this username already exists.");
         }
 
         User newUser = User.builder()
-                .username(login)
+                .username(username)
                 .password(password)
                 .build();
 
@@ -60,27 +63,24 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     /**
-     * Authorizes a user with the provided login and password.
+     * Authenticate a user with the provided username and password.
      *
-     * @param login    the user's login
-     * @param password the user's password
-     * @return an optional containing the authorized user, or empty if authorization fails
-     * @throws AuthorizeException if the user is not found or the password is incorrect
+     * @param request the auth request
+     * @return a token response containing the generated JWT token
+     * @throws InvalidCredentialsException if the user is not found or the password is incorrect
      */
-    @Override
-    @Auditable(actionType = ActionType.AUTHORIZATION, login = "@login")
-    public TokenResponse authorize(String login, String password) {
-        Optional<User> optionalUser = Optional.ofNullable(userDao.findByUsername(login));
-        if (optionalUser.isEmpty()) {
-            throw new AuthorizeException("Пользователь с данным логином отсутствует в базе данных.");
+    @Auditable(actionType = ActionType.AUTHORIZATION)
+    public TokenResponse authenticate(AuthRequest request) {
+        String username = request.username();
+        String password = request.password();
+
+        Optional<User> optionalUser = Optional.ofNullable(userDao.findByUsername(username));
+
+        if (optionalUser.isEmpty() || !PasswordUtil.checkPassword(password, optionalUser.get().getPassword())) {
+            throw new InvalidCredentialsException("Incorrect username or password.");
         }
 
-        if (!optionalUser.get().getPassword().equals(password)) {
-            throw new AuthorizeException("Неверный пароль.");
-        }
-
-        String token = jwtTokenUtils.generateToken(login);
-
+        String token = jwtTokenUtil.generateToken(username);
         return new TokenResponse(token);
     }
 }

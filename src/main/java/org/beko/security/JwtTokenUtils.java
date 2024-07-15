@@ -1,15 +1,19 @@
 package org.beko.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ClaimsBuilder;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import lombok.RequiredArgsConstructor;
+import org.beko.dto.UserDTO;
+import org.beko.exception.UserNotFoundException;
 import org.beko.model.User;
 import org.beko.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.nio.file.AccessDeniedException;
 import java.time.Duration;
 import java.util.Date;
@@ -17,43 +21,32 @@ import java.util.Date;
 /**
  * Utility class for handling JWT token operations.
  */
+@Component
+@RequiredArgsConstructor
 public class JwtTokenUtils {
+    @Value("${jwt.secret}")
+    private String secret;
 
-    private final String secret;
-    private final Duration jwtLifetime;
+    @Value("${jwt.lifetime}")
+    private String jwtLifetime;
     private final UserService userService;
-
-    /**
-     * Constructor for JwtTokenUtils.
-     *
-     * @param secret the secret key for signing JWT
-     * @param jwtLifetime the lifetime of the JWT
-     * @param userService the user service for user operations
-     */
-    public JwtTokenUtils(String secret, Duration jwtLifetime, UserService userService) {
-        this.secret = secret;
-        this.jwtLifetime = jwtLifetime;
-        this.userService = userService;
-    }
 
     /**
      * Generates a JWT for the given login.
      *
-     * @param login the login for which to generate the JWT
+     * @param username the login for which to generate the JWT
      * @return the generated JWT
      */
-    public String generateToken(String login) {
-        ClaimsBuilder claimsBuilder = Jwts.claims().subject(login);
-        Date issuedDate = new Date();
-        Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
+    public String generateToken(String username){
+        Date expirationDate = new Date(new Date().getTime() + Duration.parse(jwtLifetime).toMillis());
 
-        return Jwts.builder()
-                .claims(claimsBuilder.build())
-                .subject(login)
-                .issuedAt(issuedDate)
-                .expiration(expiredDate)
-                .signWith(signKey())
-                .compact();
+        return JWT.create()
+                .withSubject("user details")
+                .withClaim("username", username)
+                .withIssuedAt(new Date())
+                .withIssuer("ruslan")
+                .withExpiresAt(expirationDate)
+                .sign(Algorithm.HMAC256(secret));
     }
 
     /**
@@ -63,64 +56,49 @@ public class JwtTokenUtils {
      * @return the authentication result
      * @throws AccessDeniedException if the JWT is invalid or the user does not exist
      */
-    public Authentication authentication(String token) throws AccessDeniedException {
+    public Authentication authentication(String token) throws AccessDeniedException, UserNotFoundException {
         if (!validateToken(token)) {
             throw new AccessDeniedException("Access denied: Invalid token");
         }
 
-        String login = extractLogin(token);
-        User user = userService.getUserByName(login);
+        String username = getUsernameClaim(token);
+        User user = userService.getUserByName(username);
 
-        return new Authentication(login, user.getRole(), true, "Successful login");
+        return new Authentication(username, user.getRole());
     }
 
     /**
-     * Extracts the login from the given JWT.
+     * Retrieves the username claim from the provided JWT token.
      *
-     * @param token the JWT from which to extract the login
-     * @return the extracted login
+     * @param token the JWT token from which to retrieve the username claim
+     * @return the username claim extracted from the JWT token
+     * @throws JWTVerificationException if the token verification fails
      */
-    public String extractLogin(String token) {
-        return extractAllClaims(token).getSubject();
+    private String getUsernameClaim(String token) throws JWTVerificationException {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                .withIssuer("ruslan")
+                .build();
+
+        DecodedJWT jwt = verifier.verify(token);
+        return jwt.getClaim("username").asString();
     }
 
     /**
-     * Extracts all claims from the given JWT.
+     * Validates the given JWT token.
      *
-     * @param token the JWT from which to extract the claims
-     * @return the extracted claims
+     * @param token the JWT token to validate
+     * @return true if the token is valid, false otherwise
      */
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(signKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
+    public boolean validateToken(String token) {
+        try {
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
+                    .withIssuer("ruslan")
+                    .build();
 
-    /**
-     * Validates the given JWT.
-     *
-     * @param token the JWT to validate
-     * @return true if the JWT is valid, false otherwise
-     * @throws RuntimeException if the JWT is invalid
-     */
-    public boolean validateToken(String token) throws RuntimeException {
-        Jws<Claims> claims = Jwts.parser()
-                .verifyWith(signKey())
-                .build()
-                .parseSignedClaims(token);
-
-        return !claims.getPayload().getExpiration().before(new Date());
-    }
-
-    /**
-     * Generates the secret key for signing JWT.
-     *
-     * @return the generated secret key
-     */
-    private SecretKey signKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+            verifier.verify(token);
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
     }
 }

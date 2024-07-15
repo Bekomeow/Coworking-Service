@@ -4,6 +4,8 @@ import org.beko.dao.BookingDAO;
 import org.beko.model.Booking;
 import org.beko.model.Place;
 import org.beko.util.ConnectionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * Implementation of the BookingDAO interface for managing Booking entities in the database.
  */
+@Repository
 public class BookingDAOImpl implements BookingDAO {
     private final ConnectionManager connectionManager;
     private final PlaceDAOImpl PLACE_DAO;

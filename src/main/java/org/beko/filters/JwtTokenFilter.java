@@ -1,35 +1,42 @@
 package org.beko.filters;
 
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.annotation.WebInitParam;
-import jakarta.servlet.http.HttpServletRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.beko.dto.ExceptionResponse;
+import org.beko.exception.AuthenticationException;
+import org.beko.exception.UserNotFoundException;
 import org.beko.security.Authentication;
 import org.beko.security.JwtTokenUtils;
+import org.springframework.stereotype.Component;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A filter that intercepts all incoming HTTP requests and checks for the presence of a JWT in the Authorization header.
  * If a valid JWT is found, it authenticates the user and stores the authentication in the servlet context.
  * If no JWT is found or the JWT is invalid, it stores an unauthenticated Authentication object in the servlet context.
  */
-@WebFilter(urlPatterns = "/*", initParams = @WebInitParam(name = "order", value = "1"))
+@Component
+@RequiredArgsConstructor
 public class JwtTokenFilter implements Filter {
 
-    private JwtTokenUtils jwtTokenUtils;
-    private ServletContext servletContext;
+    private final JwtTokenUtils jwtTokenUtil;
+    private final ObjectMapper objectMapper;
+
+    private final ServletContext servletContext;
+    private List<String> whiteList = List.of("/auth/", "/swagger-resources", "/swagger-ui", "/v2/api-docs");
 
     /**
      * Initializes the filter.
      *
-     * @param filterConfig the filter configuration
-     * @throws ServletException if an error occurs during initialization
+     * @param config the filter configuration
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        this.servletContext = filterConfig.getServletContext();
-        jwtTokenUtils = (JwtTokenUtils) servletContext.getAttribute("jwtTokenUtils");
+    public void init(FilterConfig config) {
     }
 
     /**
@@ -45,17 +52,47 @@ public class JwtTokenFilter implements Filter {
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String bearerToken = ((HttpServletRequest) servletRequest).getHeader("Authorization");
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
+        HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
+
+        String path = httpRequest.getRequestURI();
+
+        if (isPathOnWhiteList(path)) {
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
+        String bearerToken = httpRequest.getHeader("Authorization");
         try {
-            if (bearerToken != null && bearerToken.startsWith("Bearer ") && jwtTokenUtils.validateToken(bearerToken.substring(7))) {
-                Authentication authentication = jwtTokenUtils.authentication(bearerToken.substring(7));
+            if (bearerToken != null && bearerToken.startsWith("Bearer ") && jwtTokenUtil.validateToken(bearerToken.substring(7))) {
+                Authentication authentication = jwtTokenUtil.authentication(bearerToken.substring(7));
                 servletContext.setAttribute("authentication", authentication);
             } else {
-                servletContext.setAttribute("authentication", new Authentication(null, null, false, "Bearer token is null or invalid!"));
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
+        } catch (UserNotFoundException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            objectMapper.writeValue(httpResponse.getWriter(), new ExceptionResponse(e.getMessage()));
+        } catch (AuthenticationException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         } catch (RuntimeException e) {
-            servletContext.setAttribute("authentication", new Authentication(null, null, false, e.getMessage()));
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return;
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    @Override
+    public void destroy() {
+    }
+
+    private boolean isPathOnWhiteList(String path){
+        for (String p : whiteList) {
+            if(path.startsWith(p)) { return true;}
+        }
+        return false;
     }
 }

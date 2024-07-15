@@ -1,110 +1,63 @@
 package org.beko.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.lang.reflect.Proxy;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 /**
- * Manages database connections using a connection pool.
+ * Utility class for managing database connections using JDBC.
  */
+@Component
 public class ConnectionManager {
-    private static final String PASSWORD_KEY = "db.password";
-    private static final String USERNAME_KEY = "db.username";
-    private static final String URl_KEY = "db.url";
-    private static final String POOL_SIZE_KEY = "db.pool.size";
-    private static final int DEFAULT_POOL_SIZE = 5;
-    private BlockingQueue<Connection> pool;
-    private List<Connection> sourceConnection;
-
-    public ConnectionManager() {
-        loadDriver();
-        initConnectionPool(
-                PropertiesUtil.get(URl_KEY),
-                PropertiesUtil.get(USERNAME_KEY),
-                PropertiesUtil.get(PASSWORD_KEY));
-    }
-
-    public ConnectionManager(String url, String username, String password) {
-        loadDriver();
-        initConnectionPool(url, username, password);
-    }
+    @Value("${datasource.url}")
+    private String url;
+    @Value("${datasource.driver-class-name}")
+    private String driver;
+    @Value("${datasource.username}")
+    private String username;
+    @Value("${datasource.password}")
+    private String password;
 
     /**
-     * Initializes the connection pool.
+     * Method for establishing connection with database using values from parameter.
+     * This method used for testing service and establish connection with test database.
+     * @return Connection class which may be used to work with database.
      */
-    private void initConnectionPool(String url, String username, String password) {
-        var poolSize = PropertiesUtil.get(POOL_SIZE_KEY);
-        var size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
-        pool = new ArrayBlockingQueue<>(size);
-        sourceConnection = new ArrayList<>(size);
-
-        for (int i = 0; i < size; i++) {
-            var connection = open(url, username, password);
-            var proxyConnection = (Connection) Proxy.newProxyInstance(ConnectionManager.class.getClassLoader(), new Class[]{Connection.class},
-                    (proxy, method, objects) -> method.getName().equals("close")
-                            ? pool.add((Connection) proxy) : method.invoke(connection, objects));
-            pool.add(proxyConnection);
-            sourceConnection.add(connection);
-        }
-    }
-
-    /**
-     * Gets a connection from the pool.
-     *
-     * @return a database connection
-     */
-    public Connection getConnection() {
+    public Connection getConnection(String url, String username, String password, String driver) {
         try {
-            return pool.take();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Loads the database driver.
-     */
-    private void loadDriver() {
-        try {
-            Class.forName("org.postgresql.Driver");
+            this.url = url;
+            this.driver = driver;
+            this.password = password;
+            this.username = username;
+            Class.forName(driver);
+            return DriverManager.getConnection(url, username, password);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get a database connection.", e);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     /**
-     * Opens a new database connection.
-     *
-     * @return a new database connection
+     * Method for establishing connection with database.
+     * @return Connection class which may be used to work with database.
      */
-    public Connection open(String url, String username, String password) {
+    public Connection getConnection() {
         try {
+            Class.forName(driver);
+
             return DriverManager.getConnection(
                     url,
                     username,
                     password
             );
         } catch (SQLException e) {
+            throw new RuntimeException("Failed to get a database connection.", e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * Closes all connections in the pool.
-     */
-    public void closePool() {
-        for (Connection connection:sourceConnection) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 }
-

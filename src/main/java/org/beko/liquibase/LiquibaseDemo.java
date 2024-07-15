@@ -34,7 +34,7 @@ public class LiquibaseDemo {
             Liquibase liquibase = new Liquibase(changeLogFile , new ClassLoaderResourceAccessor(), database);
             liquibase.update();
 
-            log.info("Migrations completed successfully!");
+            System.out.println("Migrations successfully executed!");
         } catch (Exception e) {
             e.printStackTrace();
         }
