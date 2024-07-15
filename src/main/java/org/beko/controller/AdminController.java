@@ -1,6 +1,5 @@
 package org.beko.controller;
 
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Api(value = "Application administration")
 public class AdminController {
-
     private final AuditService auditService;
     private final PlaceService placeService;
     private final ServletContext servletContext;
@@ -67,7 +65,7 @@ public class AdminController {
     @GetMapping("/audits")
     public ResponseEntity<List<Audit>> getListOfAllAudits() throws AccessDeniedException {
         isAdmin();
-        return ResponseEntity.ok(auditService.showAllAudits());
+        return ResponseEntity.ok(auditService.getAllAudits());
     }
 
     private void isAdmin() throws AccessDeniedException {

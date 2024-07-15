@@ -1,66 +1,89 @@
 package org.beko.aspects;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.beko.annotations.Auditable;
-import org.beko.model.Audit;
+import org.beko.dto.AuthRequest;
 import org.beko.model.types.ActionType;
 import org.beko.model.types.AuditType;
-import org.beko.service.AuditService;
+import org.beko.security.Authentication;
+import org.beko.service.impl.AuditServiceImpl;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.ServletContext;
 
 /**
- * Aspect for auditing methods annotated with @Auditable.
+ * Aspect for auditing annotated methods with {@link Auditable} annotation.
  */
 @Aspect
+@Component
+@Slf4j
 @RequiredArgsConstructor
 public class AuditAspect {
 
-    private final AuditService auditService;
+    private final AuditServiceImpl auditService;
+
+    private final ServletContext servletContext;
 
     /**
-     * Pointcut for methods annotated with @Auditable or classes containing methods annotated with @Auditable.
+     * Pointcut definition to match methods annotated with {@link Auditable}.
+     * @param auditable The Auditable annotation instance.
      */
-    @Pointcut("(within(@org.beko.annotations.Auditable *) || execution(@org.beko.annotations.Auditable * *(..))) && execution(* *(..))")
-    public void annotatedByAuditable() {
+    @Pointcut("execution(@org.beko.annotations.Auditable * *(..)) && @annotation(auditable)")
+    public void annotatedByAuditable(Auditable auditable) {
     }
 
     /**
-     * Advice to perform audit logging around methods annotated with @Auditable.
-     * @param pjp The ProceedingJoinPoint representing the method being audited.
-     * @return The audit information.
+     * Advice to perform auditing around methods annotated with {@link Auditable}.
+     * @param pjp The ProceedingJoinPoint for the intercepted method.
+     * @param auditable The Auditable annotation instance.
+     * @return The result of the intercepted method.
      * @throws Throwable If an error occurs during method execution.
      */
-    @Around("annotatedByAuditable()")
-    public Audit audit(ProceedingJoinPoint pjp) throws Throwable {
-        var methodSignature = (MethodSignature) pjp.getSignature();
+    @Around("annotatedByAuditable(auditable)")
+    public Object audit(ProceedingJoinPoint pjp, Auditable auditable) throws Throwable {
+        MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
+        Auditable auditAnnotation = methodSignature.getMethod().getAnnotation(Auditable.class);
 
-        Auditable audit = methodSignature.getMethod().getAnnotation(Auditable.class);
-        ActionType actionType = audit.actionType();
-        String payload = audit.login();
-        if (payload.isEmpty()) {
-            payload = audit.userId();
+        ActionType actionType = auditAnnotation.actionType();
+        String payload = "";
+
+        if (actionType == ActionType.AUTHORIZATION || actionType == ActionType.REGISTRATION) {
+            payload = extractUsernameFromArgs(pjp.getArgs());
+        } else {
+            payload = payloadParser(auditAnnotation.username());
         }
 
-        return auditService.audit(payload, actionType, AuditType.SUCCESS);
+        try {
+            Object result = pjp.proceed();
+            auditService.record(payload, actionType, AuditType.SUCCESS);
+            return result;
+        } catch (Throwable ex) {
+            auditService.record(payload, actionType, AuditType.FAIL);
+            throw ex;
+        }
     }
 
-    /**
-     * Advice to perform audit logging on method failure for methods annotated with @Auditable.
-     * @param pjp The ProceedingJoinPoint representing the method being audited.
-     */
-    @AfterThrowing(pointcut = "annotatedByAuditable() && @annotation(org.beko.annotations.Auditable)")
-    public void auditFailure(ProceedingJoinPoint pjp) {
-        var methodSignature = (MethodSignature) pjp.getSignature();
-
-        Auditable audit = methodSignature.getMethod().getAnnotation(Auditable.class);
-        ActionType actionType = audit.actionType();
-        String payload = audit.login();
+    private String payloadParser(String payload) {
         if (payload.isEmpty()) {
-            payload = audit.userId();
+            Authentication authUser = (Authentication) servletContext.getAttribute("authentication");
+            if (authUser != null) {
+                return authUser.getUsername();
+            }
+            return "anonymous";
         }
+        return payload;
+    }
 
-        auditService.audit(audit.login(), actionType, AuditType.FAIL);
+    private String extractUsernameFromArgs(Object[] args) {
+        for (Object arg : args) {
+            if (arg instanceof AuthRequest) {
+                return ((AuthRequest) arg).username();
+            }
+        }
+        return "anonymous";
     }
 }

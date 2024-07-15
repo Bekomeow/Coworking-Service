@@ -1,13 +1,11 @@
 package org.beko.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.beko.dao.AuditDAO;
 import org.beko.model.Audit;
 import org.beko.model.types.ActionType;
 import org.beko.model.types.AuditType;
 import org.beko.util.ConnectionManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -18,125 +16,184 @@ import java.util.List;
  * Implementation of the AuditDAO interface using an in-memory map.
  * Provides methods for CRUD operations on Audit entities.
  */
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class AuditDAOImpl implements AuditDAO {
     private final ConnectionManager connectionManager;
 
-    @Override
-    public Audit findById(Long id) {
-        String sql = "SELECT * FROM coworking.\"audit\" WHERE id = ?";
-        Audit audit = null;
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                audit = new Audit(
-                        resultSet.getLong("id"),
-                        resultSet.getString("login"),
-                        AuditType.valueOf(resultSet.getString("audit_type")),
-                        ActionType.valueOf(resultSet.getString("action_type"))
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return audit;
-    }
-
     /**
-     * Retrieves a list of all Audit entities.
+     * Retrieves all audit records from the database.
      *
-     * @return A list containing all Audit entities stored in the in-memory map.
+     * @return a list of all audit records.
      */
     @Override
     public List<Audit> findAll() {
-        String sql = "SELECT * FROM coworking.\"audit\"";
         List<Audit> audits = new ArrayList<>();
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        String sql = "SELECT * FROM coworking.audits";
+
+        try (Connection conn = connectionManager.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
             while (resultSet.next()) {
-                Audit audit = new Audit(
-                        resultSet.getLong("id"),
-                        resultSet.getString("login"),
-                        AuditType.valueOf(resultSet.getString("audit_type")),
-                        ActionType.valueOf(resultSet.getString("action_type"))
-                );
-                audits.add(audit);
+                audits.add(buildAudit(resultSet));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
         }
+
         return audits;
     }
 
     /**
-     * Saves an Audit entity to the in-memory storage.
+     * Retrieves an audit record by its ID.
      *
-     * @param audit The Audit entity to save.
-     * @return The saved Audit entity with an assigned ID.
+     * @param id the ID of the audit record.
+     * @return an Optional containing the audit record if found, or empty if not found.
+     */
+    @Override
+    public Audit findById(Long id) {
+        String sqlFindById = """
+                SELECT * FROM coworking.audits
+                WHERE id=?;
+                """;
+
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlFindById)) {
+            preparedStatement.setObject(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next()
+                    ? buildAudit(resultSet)
+                    : null;
+        } catch (SQLException e) {
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Deletes an audit record by its ID.
+     *
+     * @param id the ID of the audit record.
+     */
+    @Override
+    public void deleteById(Long id) {
+        String sqlDeleteById = """
+                DELETE FROM coworking.audits
+                WHERE id = ?;
+                """;
+
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteById)) {
+            preparedStatement.setObject(1, id);
+
+        } catch (SQLException e) {
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Deletes all audit records from the database.
+     *
+     * @return true if records were deleted, false otherwise.
+     */
+    public boolean deleteAll() {
+        String sqlDeleteAll = """
+            DELETE FROM coworking.audits;
+            """;
+
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteAll)) {
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Saves a new audit record to the database.
+     *
+     * @param audit the audit record to save.
+     * @return the saved audit record with its ID set.
      */
     @Override
     public Audit save(Audit audit) {
-        String sql = "INSERT INTO coworking.\"audit\" (login, audit_type, action_type) VALUES (?,?,?);";
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, audit.getLogin());
-            statement.setString(2, audit.getAuditType().toString());
-            statement.setString(3, audit.getActionType().toString());
-            statement.executeUpdate();
+        String sqlSave = """
+            INSERT INTO coworking.audits(username, action_type, audit_type)
+            VALUES (?, ?, ?);
+            """;
 
-            try (ResultSet keys = statement.getGeneratedKeys()) {
-                if (keys.next()) {
-                    audit.setId(keys.getObject(1, Long.class));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        try (Connection connection = connectionManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlSave, Statement.RETURN_GENERATED_KEYS)) {
+
+            preparedStatement.setString(1, audit.getUsername());
+            preparedStatement.setString(2, audit.getActionType().name());
+            preparedStatement.setString(3, audit.getAuditType().name());
+
+            preparedStatement.executeUpdate();
+            ResultSet keys = preparedStatement.getGeneratedKeys();
+
+            if (keys.next()) {
+                audit.setId(keys.getLong(1));
             }
+
+            return audit;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
+            return null;
         }
-        return audit;
     }
 
+    /**
+     * Updates an existing audit record in the database.
+     *
+     * @param audit the audit record to update.
+     */
     @Override
     public void update(Audit audit) {
-        String sql = "UPDATE coworking.\"audit\" SET login = ?, audit_type = ?, action_type = ? WHERE id = ?";
+        String sqlUpdate = """
+        UPDATE coworking.audits
+        SET username = ?, action_type = ?, audit_type = ?
+        WHERE id = ?;
+        """;
+
         try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setObject(1, audit.getLogin());
-            statement.setObject(2, audit.getAuditType(), Types.OTHER);
-            statement.setObject(3, audit.getActionType(), Types.OTHER);
-            statement.setLong(4, audit.getId());
-            statement.executeUpdate();
+             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
+
+            preparedStatement.setString(1, audit.getUsername());
+            preparedStatement.setString(2, audit.getActionType().name());
+            preparedStatement.setString(3, audit.getAuditType().name());
+            preparedStatement.setLong(4, audit.getId());
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error during execution of SQL query: " + e.getMessage());
         }
     }
 
-    @Override
-    public void deleteById(Long id) {
-        String sql = "DELETE FROM coworking.\"audit\" WHERE id = ?";
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setLong(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    /**
+     * Builds an Audit object from a ResultSet.
+     *
+     * @param resultSet the ResultSet containing audit data.
+     * @return the built Audit object.
+     * @throws SQLException if an SQL error occurs.
+     */
+    private Audit buildAudit(ResultSet resultSet) throws SQLException {
+        String actionTypeString = resultSet.getString("action_type");
+        ActionType actionType = ActionType.valueOf(actionTypeString);
 
-    public void deleteAll() {
-        String sql = "DELETE FROM coworking.\"audit\"";
+        String auditTypeString = resultSet.getString("audit_type");
+        AuditType auditType = AuditType.valueOf(auditTypeString);
 
-        try (Connection connection = connectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return Audit.builder()
+                .id(resultSet.getLong("id"))
+                .auditType(auditType)
+                .auditTimestamp(resultSet.getTimestamp("audit_timestamp").toLocalDateTime())
+                .actionType(actionType)
+                .username(resultSet.getString("username"))
+                .build();
     }
 }

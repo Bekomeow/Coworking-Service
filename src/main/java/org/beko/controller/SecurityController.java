@@ -7,7 +7,7 @@ import org.beko.annotations.Loggable;
 import org.beko.dto.AuthRequest;
 import org.beko.dto.TokenResponse;
 import org.beko.dto.UserDTO;
-import org.beko.mapper.UserMapper;
+import org.beko.model.User;
 import org.beko.service.SecurityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +21,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SecurityController {
     private final SecurityService securityService;
-    private final UserMapper userMapper;
 
     @ApiOperation(value = "Register a new user", response = UserDTO.class)
     @PostMapping("/registration")
-    public ResponseEntity<UserDTO> register(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(userMapper.toDTO(securityService.register(request)));
+    public ResponseEntity<User> register(@RequestBody AuthRequest request) {
+        return ResponseEntity.ok(securityService.register(request));
     }
 
     @Loggable
     @ApiOperation(value = "Authenticate user", response = TokenResponse.class)
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> authenticate(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(securityService.authorize(request.username(), request.password()));
+        return ResponseEntity.ok(securityService.authenticate(request));
     }
 }

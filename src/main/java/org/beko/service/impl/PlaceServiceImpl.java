@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
-    private final PlaceDAOImpl PLACE_DAO;
+    private final PlaceDAO PLACE_DAO;
 
     /**
      * Adds a new place with the specified name and type.

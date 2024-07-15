@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenFilter implements Filter {
 
-    private final JwtTokenUtils jwtTokenUtils;
+    private final JwtTokenUtils jwtTokenUtil;
     private final ObjectMapper objectMapper;
 
     private final ServletContext servletContext;
@@ -64,8 +64,8 @@ public class JwtTokenFilter implements Filter {
 
         String bearerToken = httpRequest.getHeader("Authorization");
         try {
-            if (bearerToken != null && bearerToken.startsWith("Bearer ") && jwtTokenUtils.validateToken(bearerToken.substring(7))) {
-                Authentication authentication = jwtTokenUtils.authentication(bearerToken.substring(7));
+            if (bearerToken != null && bearerToken.startsWith("Bearer ") && jwtTokenUtil.validateToken(bearerToken.substring(7))) {
+                Authentication authentication = jwtTokenUtil.authentication(bearerToken.substring(7));
                 servletContext.setAttribute("authentication", authentication);
             } else {
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

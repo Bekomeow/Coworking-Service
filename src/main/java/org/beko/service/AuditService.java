@@ -17,15 +17,9 @@ public interface AuditService {
      *
      * @return the list of audit records
      */
-    List<Audit> showAllAudits();
+    List<Audit> getAllAudits();
 
-    /**
-     * Performs an audit for the specified login, action type, and audit type.
-     *
-     * @param login      the login associated with the action
-     * @param actionType the type of action being audited
-     * @param auditType  the result of the audit (SUCCESS or FAIL)
-     * @return
-     */
-    Audit audit(String login, ActionType actionType, AuditType auditType);
+    Audit save(Audit audit);
+
+    Audit record(String username, ActionType actionType, AuditType auditType);
 }

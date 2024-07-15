@@ -1,35 +1,50 @@
 package org.beko.model;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.beko.model.types.ActionType;
 import org.beko.model.types.AuditType;
+
+import java.time.LocalDateTime;
 
 /**
  * Represents an audit log entry capturing information about a user's actions.
  * Each audit entry includes a unique identifier, user login, audit type, and action type.
  *
- * @author qaisar
+ * @author ruslan
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Audit {
+
     /**
      * The unique identifier for the audit entry.
      */
     private Long id;
+
     /**
-     * The login of the user associated with the audit entry.
+     * The username of the user associated with the audit entry.
      */
-    private String login;
+    private String username;
+
     /**
      * The type of audit, indicating the success or failure of an action.
      */
     private AuditType auditType;
+
     /**
      * The type of action performed by the user.
      */
     private ActionType actionType;
+
+    /**
+     * The type of action performed by the user.
+     */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime auditTimestamp;
 }

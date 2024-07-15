@@ -1,6 +1,7 @@
 package org.beko.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.beko.dao.BookingDAO;
 import org.beko.dao.impl.BookingDAOImpl;
 import org.beko.model.Booking;
 import org.beko.model.Place;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class BookingServiceImpl implements BookingService {
-    private final BookingDAOImpl BOOKING_DAO;
+    private final BookingDAO BOOKING_DAO;
 
     /**
      * Books a place for a user for the specified time period.

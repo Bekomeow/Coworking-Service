@@ -1,36 +1,43 @@
 package org.beko.aspects;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 
-@Aspect
+/**
+ * Aspect for logging methods annotated with {@link org.beko.annotations.Loggable}.
+ */
 @Slf4j
+@Component
+@Aspect
 public class LoggableAspect {
 
-    @Pointcut("within(@org.beko.annotations.Loggable *) && execution(* *(..))")
-    public void annotatedByLoggable() { }
+    /**
+     * Pointcut definition to match methods annotated with {@link org.beko.annotations.Loggable}.
+     */
+    @Pointcut("@annotation(org.beko.annotations.Loggable) && execution(* *(..))")
+    public void loggableMethods(){}
 
-    @Around("annotatedByLoggable()")
-    public Object logging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
-
-        final StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        log.info("Calling method " + methodSignature.toShortString());
+    /**
+     * Advice to log method entry, execution time, and exit.
+     * @param joinPoint The ProceedingJoinPoint for the intercepted method.
+     * @return The result of the intercepted method.
+     * @throws Throwable If an error occurs during method execution.
+     */
+    @Around("loggableMethods()")
+    public Object loggableMethods(ProceedingJoinPoint joinPoint) throws Throwable {
+        String methodName = joinPoint.getSignature().toShortString();
+        log.info("Calling method " + methodName);
 
         long startTime = System.currentTimeMillis();
-        Object result = proceedingJoinPoint.proceed();
+        Object result = joinPoint.proceed();
         long endTime = System.currentTimeMillis();
 
-        stopWatch.stop();
-        log.info("Execution of method " + methodSignature.toShortString() +
-                " finished. Execution time is " + (endTime - startTime) + " ms");
+        log.info("Execution of method " + methodName +
+                " finished. Execution time is " + (endTime - startTime) + " ms.");
         return result;
     }
 }

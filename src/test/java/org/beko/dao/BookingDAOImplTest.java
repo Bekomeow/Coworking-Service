@@ -9,7 +9,6 @@
 //import org.beko.model.Place;
 //import org.beko.model.User;
 //import org.beko.util.ConnectionManager;
-//import org.beko.util.PropertiesUtil;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
@@ -29,16 +28,18 @@
 //
 //    @BeforeEach
 //    public void setUp() {
-//        ConnectionManager connectionManager = new ConnectionManager(
+//        ConnectionManager connectionManager = new ConnectionManager();
+//
+//        String changeLogFile = "changeLogFile = db/changelog/main-changelog.xml;\n";
+//        String schemaName = "db/changelog/main-changelog.xml";
+//
+//        LiquibaseDemo liquibaseDemo = new LiquibaseDemo(connectionManager.getConnection(
 //                container.getJdbcUrl(),
 //                container.getUsername(),
-//                container.getPassword()
-//        );
+//                container.getPassword(),
+//                "org.postgresql.Driver"
+//        ), changeLogFile, schemaName);
 //
-//        String changeLogFile = PropertiesUtil.get("liquibase.change-log");
-//        String schemaName = PropertiesUtil.get("liquibase.liquibase-schema");
-//
-//        LiquibaseDemo liquibaseDemo = new LiquibaseDemo(connectionManager.getConnection(), changeLogFile, schemaName);
 //        liquibaseDemo.runMigrations();
 //
 //        userDAO = new UserDAOImpl(connectionManager);

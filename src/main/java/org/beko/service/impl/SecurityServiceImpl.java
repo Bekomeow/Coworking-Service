@@ -11,6 +11,7 @@ import org.beko.exception.RegisterException;
 import org.beko.model.User;
 import org.beko.model.types.ActionType;
 import org.beko.security.JwtTokenUtils;
+import org.beko.service.SecurityService;
 import org.beko.util.PasswordUtil;
 import org.beko.util.ValidationUtil;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class SecurityServiceImpl {
-
+public class SecurityServiceImpl implements SecurityService {
     private final UserDAO userDao;
     private final JwtTokenUtils jwtTokenUtil;
 
